@@ -1,0 +1,57 @@
+version: '3.5'
+
+services:
+  cook-me-nginx:
+    container_name: cook-me-nginx
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - 500:80
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - cook-me-api
+    networks:
+      - cook-me-network
+
+  cook-me-api:
+    container_name: cook-me-api
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_CONFIG: remote_host=172.17.0.1 remote_port=9005
+    volumes:
+      - ./:/appdata/www
+      - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa
+    depends_on:
+      - cook-me-db
+    networks:
+      - cook-me-network
+
+  cook-me-db:
+    container_name: cook-me-db
+    image: mysql:5.7
+    ports:
+      - 3350:3306
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+    command: mysqld --sql_mode="STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - cook-me-db-data:/var/lib/mysql
+    networks:
+      - cook-me-network
+
+volumes:
+  cook-me-db-data:
+
+networks:
+  cook-me-network:
