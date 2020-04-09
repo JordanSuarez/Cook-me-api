@@ -9,7 +9,7 @@
 - `make build` (only the first time)
 - `make run`
 - `make generate-ssh-keys` (only the first time)
-- `make-prepare`
+- `make prepare`
 
 ## Folder structure
 ```
