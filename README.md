@@ -41,7 +41,7 @@ src
 - `http://localhost:500/api/v1/docs` to check the Open API v3 documentation
 - `make restart` to stop and start containers
 - `make ssh-be` to access the PHP container bash
-- `make be-logs` to tail dev logs
+- `make api-logs` to tail dev logs
 - `make code-style` to run PHP-CS-FIXER on src and tests
 - `make tests` to run the test suite
 
