@@ -3,7 +3,6 @@
 
 namespace App\Entity;
 
-
 use Ramsey\Uuid\Uuid;
 
 class Recipe
@@ -16,9 +15,21 @@ class Recipe
      * @var string
      */
     private string $name;
+    /**
+     * @var int
+     */
     private int $preparationTime;
+    /**
+     * @var string
+     */
     private string $instruction;
+    /**
+     * @var \DateTime
+     */
     private \DateTime $createdAt;
+    /**
+     * @var \DateTime
+     */
     private \DateTime $updatedAt;
 
     /**
