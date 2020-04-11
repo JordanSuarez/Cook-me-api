@@ -1,9 +1,6 @@
 <?php
 
-
 namespace App\Entity;
-
-use Ramsey\Uuid\Uuid;
 
 class Quantity
 {

@@ -1,52 +1,64 @@
 <?php
 
-
 namespace App\Entity;
 
-use Ramsey\Uuid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class RecipeType
+ * @ORM\Entity(repositoryClass="App/Repository/RecipeTypeRepository")
+ * @package App\Entity
+ */
 class RecipeType
 {
     /**
-     * @var string|null
+     * @var int
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private ?string $id;
+    private int $id;
+
     /**
      * @var string
+     * @ORM\Column(type="string", length=50, unique=true, nullable=false)
      */
     private string $name;
 
     /**
+     * @var array
+     * @ORM\OneToMany(targetEntity="Recipe", mappedBy="recipeType")
+     */
+    private array $recipes;
+
+    /**
      * Recipe_Type constructor.
-     * @param string $name
      */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string|null
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return array
+     */
+    public function getRecipes(): array
+    {
+        return $this->recipes;
+    }
 }

@@ -20,9 +20,6 @@ class User implements UserInterface
     private \DateTime $updatedAt;
 
     /**
-     * @param string $name
-     * @param string $email
-     * @param string|null $id
      * @throws \Exception
      */
     public function __construct(string $name, string $email, string $id = null)

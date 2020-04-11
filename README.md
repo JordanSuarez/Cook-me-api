@@ -40,9 +40,11 @@ src
 - `make generate-ssh-keys` to generate JWT certificates
 - `http://localhost:500/api/v1/docs` to check the Open API v3 documentation
 - `make restart` to stop and start containers
-- `make ssh-be` to access the PHP container bash
+- `make ssh-api` to access the PHP container bash
 - `make api-logs` to tail dev logs
 - `make code-style` to run PHP-CS-FIXER on src and tests
+- `make migrations` to run doctrine:migrations:migrate
+- `make migrations-diff` to run doctrine:migrations:diff
 - `make tests` to run the test suite
 
 ## Stack:
