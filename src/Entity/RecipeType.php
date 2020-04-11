@@ -5,7 +5,7 @@ namespace App\Entity;
 
 use Ramsey\Uuid\Uuid;
 
-class Recipe_Type
+class RecipeType
 {
     /**
      * @var string|null

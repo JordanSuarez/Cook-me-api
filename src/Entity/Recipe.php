@@ -3,16 +3,24 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * Class Recipe
+ * @package App\Entity
+ * @ORM\Entity(repositoryClass="App/Repository/RecipeRepository")
+ */
 class Recipe
 {
     /**
      * @var string|null
+     * @ORM\Column(type="string", unique=true, nullable=false)
      */
     private ?string $id;
     /**
      * @var string
+     * @ORM\Column(type="string", length=50, unique=true, nullable=false)
      */
     private string $name;
     /**
