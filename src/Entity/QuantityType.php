@@ -2,37 +2,61 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class QuantityType.
+ * @ORM\Entity(repositoryClass="App/Repository/QuantityTypeRepository")
+ * @package App\Entity
+ */
 class QuantityType
 {
     /**
-     * @var string|null
+     * @var int
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
-    private ?string $id;
+    private int $id;
+
     /**
      * @var string
+     * @ORM\Column(type="string", length=30, unique=true, nullable=false)
      */
     private string $name;
 
     /**
-     * Quantity_Type constructor.
+     * QuantityType constructor.
+     * @param string $name
      */
+
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    public function getId(): ?string
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?int
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?int $name): void
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
+
 }
