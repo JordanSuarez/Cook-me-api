@@ -40,7 +40,7 @@ services:
     ports:
       - 3350:3306
     environment:
-      MYSQL_DATABASE: database
+      MYSQL_DATABASE: cook_me_dev
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
