@@ -3,17 +3,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\QuantityType;
 
 /**
  * Class Quantity.
+ *
  * @ORM\Entity(repositoryClass="App/Repository/QuantityRepository")
- * @package App\Entity
  */
 class Quantity
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,7 +19,6 @@ class Quantity
     private int $id;
 
     /**
-     * @var string
      * @ORM\Column(type="float", nullable=false)
      */
     private string $quantity;
@@ -35,6 +32,7 @@ class Quantity
 
     /**
      * Quantity constructor.
+     *
      * @param int|string $quantity
      */
     public function __construct($quantity)
@@ -42,25 +40,16 @@ class Quantity
         $this->quantity = $quantity;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getQuantity(): int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     */
     public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
@@ -81,5 +70,4 @@ class Quantity
     {
         $this->quantityType = $quantityType;
     }
-
 }

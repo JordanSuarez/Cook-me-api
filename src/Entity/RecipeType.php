@@ -6,14 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class RecipeType
+ * Class RecipeType.
+ *
  * @ORM\Entity(repositoryClass="App/Repository/RecipeTypeRepository")
- * @package App\Entity
  */
 class RecipeType
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,13 +20,11 @@ class RecipeType
     private int $id;
 
     /**
-     * @var string
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
      */
     private string $name;
 
     /**
-     * @var array
      * @ORM\OneToMany(targetEntity="Recipe", mappedBy="recipeType")
      */
     private array $recipes;
@@ -56,9 +53,6 @@ class RecipeType
         $this->name = $name;
     }
 
-    /**
-     * @return array
-     */
     public function getRecipes(): array
     {
         return $this->recipes;
