@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Quantity;
 
@@ -41,12 +42,18 @@ class Ingredient
     private \DateTime $updatedAt;
 
     /**
-     * @var
+     * @var \App\Entity\Quantity
      * @ORM\OneToOne(targetEntity="Quantity")
-     * @ORM\JoinColumn(name="quantity_id, referencedColumnName="id")
+     * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      */
     private Quantity $quantity;
 
+    /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="ingredients")
+     * @ORM\JoinTable(name="ingredients_recipes")
+     */
+    private array $recipes;
     /**
      * Ingredient constructor.
      * @param string $name
@@ -56,6 +63,7 @@ class Ingredient
     {
         $this->name = $name;
         $this->description = $description;
+        $this->recipes = new ArrayCollection();
     }
 
     /**
@@ -144,6 +152,22 @@ class Ingredient
     public function setQuantity($quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecipes(): array
+    {
+        return $this->recipes;
+    }
+
+    /**
+     * @param array $recipes
+     */
+    public function setRecipes(array $recipes): void
+    {
+        $this->recipes = $recipes;
     }
 
 }

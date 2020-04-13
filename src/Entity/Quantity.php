@@ -21,7 +21,7 @@ class Quantity
     private int $id;
 
     /**
-     * @var int
+     * @var string
      * @ORM\Column(type="float", nullable=false)
      */
     private string $quantity;

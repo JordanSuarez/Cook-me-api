@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,6 +38,7 @@ class RecipeType
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?string

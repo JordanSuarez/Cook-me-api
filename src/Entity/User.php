@@ -5,26 +5,72 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Security\Role;
-use Ramsey\Uuid\Uuid;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class User.
+ * @ORM\Entity(repositoryClass="App/Repository/UserRepository")
+ * @package App\Entity
+ */
 class User implements UserInterface
 {
-    private ?string $id;
+    /**
+     * @var int
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private int $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=50, nullable=false)
+     */
     private string $name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100, unique=true, nullable=false)
+     */
     private string $email;
+
+    /**
+     * @var string
+     * @ORM\Column(type="binary", length=100, nullable=false)
+     */
     private string $password;
+
+    /**
+     * @var array
+     * @ORM\Column(type="simple_array", nullable=false)
+     */
     private array $roles;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
     private ?string $token = null;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=false)
+     */
     private \DateTime $createdAt;
+    /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", nullable=true)
+     */
     private \DateTime $updatedAt;
 
     /**
+     * @param string $name
+     * @param string $email
      * @throws \Exception
      */
-    public function __construct(string $name, string $email, string $id = null)
+    public function __construct(string $name, string $email)
     {
-        $this->id = $id ?? Uuid::uuid4()->toString();
         $this->name = $name;
         $this->email = $email;
         $this->roles[] = Role::ROLE_USER;
@@ -33,69 +79,124 @@ class User implements UserInterface
         $this->markAsUpdated();
     }
 
-    public function getId(): ?string
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    public function getToken(): ?string
+    /**
+     * @return string
+     */
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    public function setToken(?string $token): void
+    /**
+     * @param string $token
+     */
+    public function setToken(string $token): void
     {
         $this->token = $token;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     public function markAsUpdated(): void

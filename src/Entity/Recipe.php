@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\RecipeType;
+use Exception;
 
 /**
  * Class Recipe.
@@ -39,33 +42,40 @@ class Recipe
     private string $instruction;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private \DateTime $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTime $updatedAt;
+    private DateTime $updatedAt;
 
     /**
-     * @var
+     * @var \App\Entity\RecipeType
      * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
      * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
      */
     private RecipeType $recipeType;
 
     /**
+     * @var array
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
+     */
+    private array $ingredients;
+
+    /**
      * Recipe constructor.
-     * @throws \Exception
+     * @param string $name
+     * @param string $instruction
      */
     public function __construct(string $name, string $instruction)
     {
         $this->name = $name;
         $this->instruction = $instruction;
-
+        $this->ingredients = new ArrayCollection();
     }
 
     /**
@@ -125,33 +135,33 @@ class Recipe
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
      */
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -172,5 +182,20 @@ class Recipe
         $this->recipeType = $recipeType;
     }
 
+    /**
+     * @return array
+     */
+    public function getIngredients(): array
+    {
+        return $this->ingredients;
+    }
+
+    /**
+     * @param array $ingredients
+     */
+    public function setIngredients(array $ingredients): void
+    {
+        $this->ingredients = $ingredients;
+    }
 
 }
