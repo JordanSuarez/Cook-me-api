@@ -21,10 +21,10 @@ class QuantityTypeFixtures extends Fixture
     private function getQuantityTypes(): array
     {
         return [
-            'gram',
-            'centiliter',
-            'spoon',
-            'unit',
+            'gramme',
+            'centilitre',
+            'cuillère',
+            'unité',
         ];
     }
 }
