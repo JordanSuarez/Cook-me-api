@@ -11,12 +11,13 @@ class QuantityTypeFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $quantityTypeNames = $this->getQuantityTypes();
-        foreach ($quantityTypeNames as $quantityTypeName) {
-            $quantityType = new QuantityType($quantityTypeName);
+        foreach ($quantityTypeNames as $key => $value) {
+            $quantityType = new QuantityType($value);
+            $this->addReference('quantity_type_'.$key, $quantityType);
             $manager->persist($quantityType);
         }
         $manager->flush();
-    }
+            }
 
     private function getQuantityTypes(): array
     {
