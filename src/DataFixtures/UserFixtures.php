@@ -17,9 +17,6 @@ class UserFixtures extends Fixture
         $this->encoderService = $encoderService;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function load(ObjectManager $manager)
     {
         $users = $this->getUsers();
