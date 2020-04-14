@@ -127,4 +127,7 @@ class Ingredient
     {
         $this->recipes = $recipes;
     }
+
+    // Add to $recipe array collection
+
 }

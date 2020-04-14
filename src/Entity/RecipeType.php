@@ -27,8 +27,7 @@ class RecipeType
     /**
      * @ORM\OneToMany(targetEntity="Recipe", mappedBy="recipeType")
      */
-    private array $recipes;
-
+    private $recipes;
     /**
      * Recipe_Type constructor.
      */
@@ -53,7 +52,7 @@ class RecipeType
         $this->name = $name;
     }
 
-    public function getRecipes(): array
+    public function getRecipes(): ArrayCollection
     {
         return $this->recipes;
     }

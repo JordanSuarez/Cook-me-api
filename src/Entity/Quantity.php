@@ -21,23 +21,23 @@ class Quantity
     /**
      * @ORM\Column(type="float", nullable=false)
      */
-    private string $quantity;
+    private string $number;
 
     /**
-     * @var
-     * @ORM\OneToOne(targetEntity="QuantityType")
+     * @var QuantityType
+     * @ORM\ManyToOne(targetEntity="QuantityType")
      * @ORM\JoinColumn(name="quantity_type_id", referencedColumnName="id")
      */
     private QuantityType $quantityType;
 
     /**
-     * Quantity constructor.
+     * Number constructor.
      *
-     * @param int|string $quantity
+     * @param int|string $number
      */
-    public function __construct($quantity)
+    public function __construct($number)
     {
-        $this->quantity = $quantity;
+        $this->number = $number;
     }
 
     public function getId(): int
@@ -45,15 +45,22 @@ class Quantity
         return $this->id;
     }
 
-    public function getQuantity(): int
+    /**
+     * @return string
+     */
+    public function getNumber(): string
     {
-        return $this->quantity;
+        return $this->number;
     }
 
-    public function setQuantity(int $quantity): void
+    /**
+     * @param string $number
+     */
+    public function setNumber(string $number): void
     {
-        $this->quantity = $quantity;
+        $this->number = $number;
     }
+
 
     /**
      * @return mixed
