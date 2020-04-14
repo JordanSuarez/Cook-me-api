@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\QuantityType;
+use App\Entity\RecipeType;
 /* use Symfony\Component\Security\Core\User\UserInterface; */
 
-class QuantityTypeRepository extends BaseRepository
+class RecipeTypeRepository extends BaseRepository
 {
     protected static function entityClass(): string
     {
-        return QuantityType::class;
+        return RecipeType::class;
     }
 }
