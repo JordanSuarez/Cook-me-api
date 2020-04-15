@@ -25,7 +25,9 @@ class RecipeTypeFixtures extends Fixture
         return [
             'entrée',
             'plat',
-            'dessert'
+            'dessert',
+            'sucrée',
+            'salée'
         ];
     }
 

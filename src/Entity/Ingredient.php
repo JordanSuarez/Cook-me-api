@@ -36,16 +36,11 @@ class Ingredient
     private \DateTime $updatedAt;
 
     /**
+     * @var Quantity
      * @ORM\OneToOne(targetEntity="Quantity")
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      */
     private Quantity $quantity;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="ingredients")
-     * @ORM\JoinTable(name="ingredients_recipes")
-     */
-    private $recipes;
 
     /**
      * Ingredient constructor.
@@ -56,7 +51,6 @@ class Ingredient
     {
         $this->name = $name;
         $this->description = $description;
-        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): int
@@ -120,25 +114,4 @@ class Ingredient
         $this->quantity = $quantity;
     }
 
-    public function getRecipes(): array
-    {
-        return $this->recipes;
-    }
-
-    public function setRecipes(array $recipes): void
-    {
-        $this->recipes = $recipes;
-    }
-
-    // Add to $recipe array collection
-
-    /**
-     * @param $name
-     * @param $preparationTime
-     * @param $instruction
-     */
-    public function addRecipes($name, $preparationTime, $instruction)
-    {
-        $this->recipes->addRecipes($name, $preparationTime, $instruction);
-    }
 }

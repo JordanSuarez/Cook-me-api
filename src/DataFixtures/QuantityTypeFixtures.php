@@ -26,6 +26,7 @@ class QuantityTypeFixtures extends Fixture
             'centilitre',
             'cuillère',
             'unité',
+            'mililitre'
         ];
     }
 }

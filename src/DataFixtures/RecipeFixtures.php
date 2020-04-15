@@ -11,15 +11,14 @@ class RecipeFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $recipe = new Recipe("pizza", "test pizza");
-        $recipe->setRecipeType($this->getReference('recipe_type_1'));
-        /*$recipe->setIngredients($this->getReference('ingredient_2'));*/
-        $recipe->setCreatedAt(new \DateTime('now'));
-        $manager->persist($recipe);
-        $recipe2 = new Recipe("salade", "test salade");
-        $recipe2->setRecipeType($this->getReference('recipe_type_2'));
-        $recipe2->setCreatedAt(new \DateTime('now'));
-        $manager->persist($recipe2);
+        for ($i = 0; $i < 5; $i++) {
+            $recipe = new Recipe('recipe name '.$i, 'instruction '.$i);
+            $recipe->addIngredient($this->getReference('ingredient_'.$i));
+            $recipe->setRecipeType($this->getReference('recipe_type_'.$i));
+            $recipe->setCreatedAt(new \DateTime());
+            $this->addReference('recipe_'.$i, $recipe);
+            $manager->persist($recipe);
+        }
         $manager->flush();
     }
 }

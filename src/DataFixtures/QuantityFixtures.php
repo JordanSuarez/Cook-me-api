@@ -11,12 +11,12 @@ class QuantityFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $quantity = new Quantity(2);
-        $quantity->setQuantityType($this->getReference('quantity_type_1'));
-        $manager->persist($quantity);
-        $quantity2 = new Quantity(32);
-        $quantity2->setQuantityType($this->getReference('quantity_type_1'));
-        $manager->persist($quantity2);
+        for ($i = 0; $i < 5; $i++) {
+            $quantity = new Quantity($i);
+            $quantity->setQuantityType($this->getReference('quantity_type_'.$i));
+            $this->addReference('quantity_'.$i, $quantity);
+            $manager->persist($quantity);
+        }
         $manager->flush();
     }
 }

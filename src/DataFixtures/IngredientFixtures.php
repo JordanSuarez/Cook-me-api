@@ -11,11 +11,11 @@ class IngredientFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        for($i = 0; $i < 5; $i++)
-        {
-            $ingredient = new Ingredient("ing_name$i", "ing_desc$i");
+        for($i = 0; $i < 5; $i++) {
+            $ingredient = new Ingredient('ingredient_name'.$i, 'ingredient_description'.$i);
+            $ingredient->setQuantity($this->getReference('quantity_'.$i));
+            $ingredient->setCreatedAt(new \DateTime());
             $this->addReference('ingredient_'.$i, $ingredient);
-            $ingredient->setCreatedAt(new \DateTime('now'));
             $manager->persist($ingredient);
         }
         $manager->flush();

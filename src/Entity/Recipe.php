@@ -52,7 +52,11 @@ class Recipe
     private RecipeType $recipeType;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
+     * @ORM\ManyToMany(targetEntity="Ingredient")
+     * @ORM\JoinTable(name="recipes_ingredients",
+     *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")}
+     * )
      */
     private $ingredients;
 
@@ -147,6 +151,26 @@ class Recipe
     public function setIngredients(array $ingredients): void
     {
         $this->ingredients = $ingredients;
+    }
+
+    /**
+     * @param Ingredient $ingredient
+     */
+    public function addIngredient(Ingredient $ingredient)
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+        }
+    }
+
+    /**
+     * @param Ingredient $ingredient
+     */
+    public function removeIngredient(Ingredient $ingredient)
+    {
+        if ($this->ingredients->contains($ingredient)) {
+            $this->ingredients->removeElement($ingredient);
+        }
     }
 
 }
