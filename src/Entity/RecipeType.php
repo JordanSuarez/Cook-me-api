@@ -28,8 +28,10 @@ class RecipeType
      * @ORM\OneToMany(targetEntity="Recipe", mappedBy="recipeType")
      */
     private $recipes;
+
     /**
      * Recipe_Type constructor.
+     * @param string $name
      */
     public function __construct(string $name)
     {

@@ -54,10 +54,12 @@ class Recipe
     /**
      * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
      */
-    private array $ingredients;
+    private $ingredients;
 
     /**
      * Recipe constructor.
+     * @param string $name
+     * @param string $instruction
      */
     public function __construct(string $name, string $instruction)
     {
@@ -146,4 +148,5 @@ class Recipe
     {
         $this->ingredients = $ingredients;
     }
+
 }

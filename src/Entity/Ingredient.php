@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Ingredient.
  *
- * @ORM\Entity(repositoryClass="App/Repository/IngredientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\IngredientRepository", repositoryClass="App/Repository/IngredientRepository")
  */
 class Ingredient
 {
@@ -45,10 +45,12 @@ class Ingredient
      * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="ingredients")
      * @ORM\JoinTable(name="ingredients_recipes")
      */
-    private array $recipes;
+    private $recipes;
 
     /**
      * Ingredient constructor.
+     * @param string $name
+     * @param string $description
      */
     public function __construct(string $name, string $description)
     {
@@ -130,4 +132,13 @@ class Ingredient
 
     // Add to $recipe array collection
 
+    /**
+     * @param $name
+     * @param $preparationTime
+     * @param $instruction
+     */
+    public function addRecipes($name, $preparationTime, $instruction)
+    {
+        $this->recipes->addRecipes($name, $preparationTime, $instruction);
+    }
 }

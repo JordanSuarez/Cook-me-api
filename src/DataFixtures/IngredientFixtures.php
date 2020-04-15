@@ -2,6 +2,7 @@
 
 
 namespace App\DataFixtures;
+
 use App\Entity\Ingredient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -10,16 +11,13 @@ class IngredientFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $ingredients = $this->getIngredients();
-        foreach ($ingredients as $ingredientData) {
-            $ingredient = new Ingredient($ingredientData['name'], $ingredientData['description']);
+        for($i = 0; $i < 5; $i++)
+        {
+            $ingredient = new Ingredient("ing_name$i", "ing_desc$i");
+            $this->addReference('ingredient_'.$i, $ingredient);
+            $ingredient->setCreatedAt(new \DateTime('now'));
             $manager->persist($ingredient);
         }
         $manager->flush();
-    }
-
-    private function getIngredients(): array
-    {
-        return [];
     }
 }

@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 class AppFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
-     * @throws \Exception
+     * @param ObjectManager $manager
      */
     public function load(ObjectManager $manager)
     {
@@ -21,11 +21,11 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         return [
             UserFixtures::class,
             QuantityTypeFixtures::class,
-            /*RecipeTypeFixtures::class,*/
+            RecipeTypeFixtures::class,
             QuantityFixtures::class,
-            /*IngredientFixtures::class,
+            IngredientFixtures::class,
             RecipeFixtures::class,
-            RecipeIngredientFixtures::class,*/
+            /*RecipeIngredientFixtures::class,*/
         ];
     }
 }

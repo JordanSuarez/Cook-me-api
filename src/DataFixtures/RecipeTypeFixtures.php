@@ -12,8 +12,9 @@ class RecipeTypeFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $recipeTypeNames = $this->getRecipeTypes();
-        foreach ($recipeTypeNames as $recipeTypeName) {
-            $recipeType = new RecipeType($recipeTypeName);
+        foreach ($recipeTypeNames as $key => $value) {
+            $recipeType = new RecipeType($value);
+            $this->addReference('recipe_type_'.$key, $recipeType);
             $manager->persist($recipeType);
         }
         $manager->flush();

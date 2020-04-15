@@ -17,7 +17,7 @@ class QuantityTypeFixtures extends Fixture
             $manager->persist($quantityType);
         }
         $manager->flush();
-            }
+    }
 
     private function getQuantityTypes(): array
     {
