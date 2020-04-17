@@ -104,12 +104,11 @@ class Ingredient
     }
 
     /**
-     * @param DateTime $createdAt
      * @ORM\PrePersist()
      */
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
     }
 
     /**

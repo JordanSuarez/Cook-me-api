@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Security\Role;
-use DateTime;
+use \DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,13 +54,15 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private DateTime $createdAt;
+    private \DateTime $createdAt;
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTime $updatedAt;
+    private \DateTime $updatedAt;
 
     /**
+     * @param string $name
+     * @param string $email
      * @throws Exception
      */
     public function __construct(string $name, string $email)
@@ -69,7 +71,7 @@ class User implements UserInterface
         $this->email = $email;
         $this->roles[] = Role::ROLE_USER;
         $this->token = \sha1(\uniqid('app'));
-        $this->createdAt = new DateTime();
+        $this->createdAt = new \DateTime();
         $this->markAsUpdated();
     }
 
@@ -162,35 +164,34 @@ class User implements UserInterface
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getCreatedAt(): DateTime
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @param DateTime $createdAt
      * @ORM\PrePersist()
      */
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param DateTime $updatedAt
+     * @param \DateTime $updatedAt
      * @ORM\PreUpdate()
      */
-    public function setUpdatedAt(DateTime $updatedAt): void
+    public function setUpdatedAt( \DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -200,7 +201,7 @@ class User implements UserInterface
      */
     public function markAsUpdated(): void
     {
-        $this->updatedAt = new DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     /**
