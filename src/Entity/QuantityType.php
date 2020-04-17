@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class QuantityType.
  *
- * @ORM\Entity(repositoryClass="App/Repository/QuantityTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuantityTypeRepository")
  */
 class QuantityType
 {
@@ -32,16 +32,25 @@ class QuantityType
         $this->name = $name;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;

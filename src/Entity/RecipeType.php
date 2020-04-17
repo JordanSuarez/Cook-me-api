@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class RecipeType.
  *
- * @ORM\Entity(repositoryClass="App/Repository/RecipeTypeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RecipeTypeRepository")
  */
 class RecipeType
 {
@@ -39,21 +39,33 @@ class RecipeType
         $this->recipes = new ArrayCollection();
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return ArrayCollection
+     */
     public function getRecipes(): ArrayCollection
     {
         return $this->recipes;

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Quantity.
  *
- * @ORM\Entity(repositoryClass="App/Repository/QuantityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\QuantityRepository")
  */
 class Quantity
 {
@@ -40,6 +40,9 @@ class Quantity
         $this->number = $number;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;

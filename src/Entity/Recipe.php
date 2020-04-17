@@ -9,7 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Recipe.
  *
- * @ORM\Entity(repositoryClass="App/Repository/RecipeRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Recipe
 {
@@ -72,56 +73,91 @@ class Recipe
         $this->ingredients = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return int
+     */
     public function getPreparationTime(): int
     {
         return $this->preparationTime;
     }
 
+    /**
+     * @param int $preparationTime
+     */
     public function setPreparationTime(int $preparationTime): void
     {
         $this->preparationTime = $preparationTime;
     }
 
+    /**
+     * @return string
+     */
     public function getInstruction(): string
     {
         return $this->instruction;
     }
 
+    /**
+     * @param string $instruction
+     */
     public function setInstruction(string $instruction): void
     {
         $this->instruction = $instruction;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param DateTime $createdAt
+     * @ORM\PrePersist()
+     */
     public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
+    /**
+     * @return DateTime
+     */
     public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param DateTime $updatedAt
+     * @ORM\PreUpdate()
+     */
     public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
@@ -143,11 +179,17 @@ class Recipe
         $this->recipeType = $recipeType;
     }
 
+    /**
+     * @return array
+     */
     public function getIngredients(): array
     {
         return $this->ingredients;
     }
 
+    /**
+     * @param array $ingredients
+     */
     public function setIngredients(array $ingredients): void
     {
         $this->ingredients = $ingredients;

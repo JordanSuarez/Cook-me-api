@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Ingredient.
  *
- * @ORM\Entity(repositoryClass="App\Repository\IngredientRepository", repositoryClass="App/Repository/IngredientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\IngredientRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Ingredient
 {
@@ -29,11 +31,11 @@ class Ingredient
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private \DateTime $createdAt;
+    private DateTime $createdAt;
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTime $updatedAt;
+    private DateTime $updatedAt;
 
     /**
      * @var Quantity
@@ -53,47 +55,76 @@ class Ingredient
         $this->description = $description;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    public function getCreatedAt(): \DateTime
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): void
+    /**
+     * @param DateTime $createdAt
+     * @ORM\PrePersist()
+     */
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): \DateTime
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    /**
+     * @param DateTime $updatedAt
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }

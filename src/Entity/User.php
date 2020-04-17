@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Security\Role;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class User.
  *
- * @ORM\Entity(repositoryClass="App/Repository/UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -51,14 +54,14 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=false)
      */
-    private \DateTime $createdAt;
+    private DateTime $createdAt;
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTime $updatedAt;
+    private DateTime $updatedAt;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(string $name, string $email)
     {
@@ -66,103 +69,166 @@ class User implements UserInterface
         $this->email = $email;
         $this->roles[] = Role::ROLE_USER;
         $this->token = \sha1(\uniqid('app'));
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->markAsUpdated();
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
+    /**
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->token;
     }
 
+    /**
+     * @param string $token
+     */
     public function setToken(string $token): void
     {
         $this->token = $token;
     }
 
-    public function getCreatedAt(): \DateTime
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): void
+    /**
+     * @param DateTime $createdAt
+     * @ORM\PrePersist()
+     */
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    public function getUpdatedAt(): \DateTime
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    /**
+     * @param DateTime $updatedAt
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @throws Exception
+     */
     public function markAsUpdated(): void
     {
-        $this->updatedAt = new \DateTime();
+        $this->updatedAt = new DateTime();
     }
 
+    /**
+     *
+     */
     public function getSalt(): void
     {
     }
 
+    /**
+     * @return string
+     */
     public function getUsername(): string
     {
         return $this->email;
     }
 
+    /**
+     *
+     */
     public function eraseCredentials(): void
     {
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
     public function equals(User $user): bool
     {
         return $this->getId() === $user->getId();
