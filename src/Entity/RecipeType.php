@@ -64,9 +64,9 @@ class RecipeType
     }
 
     /**
-     * @return ArrayCollection
+     * @return
      */
-    public function getRecipes(): ArrayCollection
+    public function getRecipes()
     {
         return $this->recipes;
     }

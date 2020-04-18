@@ -15,6 +15,9 @@ run: ## Start the containers
 stop: ## Stop the containers
 	U_ID=${UID} docker-compose stop
 
+down: ## Down the containers
+	U_ID=${UID} docker-compose down
+
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) run
 

@@ -11,7 +11,7 @@ class RecipeFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < $_ENV['FIXTURES_QUANTITY']; $i++) {
             $recipe = new Recipe('recipe name '.$i, 'instruction '.$i);
             $recipe->addIngredient($this->getReference('ingredient_'.$i));
             $recipe->setRecipeType($this->getReference('recipe_type_'.$i));

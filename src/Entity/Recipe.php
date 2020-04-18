@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Recipe.
@@ -17,22 +18,26 @@ class Recipe
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @Groups({"group_recipe"})
      * @ORM\Column(type="integer")
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @Groups({"group_recipe"})
      */
     private string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"group_recipe"})
      */
-    private int $preparationTime;
+    private ?int $preparationTime;
 
     /**
      * @ORM\Column(type="text", nullable=false)
+     * @Groups({"group_recipe"})
      */
     private string $instruction;
 
@@ -44,7 +49,7 @@ class Recipe
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private DateTime $updatedAt;
+    private ?DateTime $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
@@ -100,7 +105,7 @@ class Recipe
     /**
      * @return int
      */
-    public function getPreparationTime(): int
+    public function getPreparationTime(): ?int
     {
         return $this->preparationTime;
     }
@@ -108,7 +113,7 @@ class Recipe
     /**
      * @param int $preparationTime
      */
-    public function setPreparationTime(int $preparationTime): void
+    public function setPreparationTime(?int $preparationTime): void
     {
         $this->preparationTime = $preparationTime;
     }
@@ -148,7 +153,7 @@ class Recipe
     /**
      * @return DateTime
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
@@ -179,9 +184,9 @@ class Recipe
     }
 
     /**
-     * @return array
+     * @return
      */
-    public function getIngredients(): array
+    public function getIngredients()
     {
         return $this->ingredients;
     }

@@ -10,7 +10,7 @@ class QuantityTypeFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        for ($i = 0; $i < 50; $i ++) {
+        for ($i = 0; $i < $_ENV['FIXTURES_QUANTITY']; $i ++) {
             $quantityType = new QuantityType('quantity type '.$i);
             $this->addReference('quantity_type_'.$i, $quantityType);
             $manager->persist($quantityType);

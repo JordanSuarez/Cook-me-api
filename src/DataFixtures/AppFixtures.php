@@ -19,7 +19,6 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            UserFixtures::class,
             QuantityTypeFixtures::class,
             RecipeTypeFixtures::class,
             QuantityFixtures::class,

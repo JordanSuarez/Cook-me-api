@@ -24,8 +24,6 @@ services:
         UID: $U_ID
     environment:
       PHP_IDE_CONFIG: serverName=Docker
-      PHP_XDEBUG_ENABLED: 1
-      XDEBUG_CONFIG: remote_host=172.17.0.1 remote_port=9005
     volumes:
       - ./:/appdata/www
       - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa

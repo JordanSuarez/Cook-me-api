@@ -6,34 +6,54 @@ namespace App\Repository;
 
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class RecipeRepository
  * @package App\Repository
+ * @method removeEntity(Recipe $recipe)
  */
-class RecipeRepository extends BaseRepository
+class RecipeRepository extends ServiceEntityRepository
 {
     /**
-     * @return string
+     * RecipeRepository constructor.
+     * @param ManagerRegistry $registry
      */
-    protected static function entityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return Recipe::class;
+        parent::__construct($registry, Recipe::class);
+    }
+
+
+    /**
+     * @param $entity
+     * @param bool $persist
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function save($entity, $persist = true) {
+        if($persist) $this->_em->persist($entity);
+        $this->_em->flush();
     }
 
     /**
-     * @param $name
-     * @param $instruction
+     * @param string $name
+     * @param string $instruction
      * @param Ingredient $ingredient
-     * @param $preparationTime
+     * @param int $preparationTime
      * @return Recipe
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(string $name, string $instruction, Ingredient $ingredient, int $preparationTime): Recipe
     {
         $recipe = new Recipe($name, $instruction);
         $recipe->setPreparationTime($preparationTime);
         $recipe->addIngredient($ingredient);
-        $this->saveEntity($recipe);
+        $this->save($recipe);
         return $recipe;
     }
 
@@ -42,7 +62,11 @@ class RecipeRepository extends BaseRepository
      */
     public function update(Recipe $recipe)
     {
-        $this->saveEntity($recipe);
+        try {
+            $this->save($recipe, false);
+        } catch (OptimisticLockException $e) {
+        } catch (ORMException $e) {
+        }
     }
 
     /**
@@ -52,5 +76,6 @@ class RecipeRepository extends BaseRepository
     {
         $this->removeEntity($recipe);
     }
+
 
 }

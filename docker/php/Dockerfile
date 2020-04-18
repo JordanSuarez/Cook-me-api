@@ -16,10 +16,11 @@ RUN apt-get update \
     && apt-get install -y git acl openssl openssh-client wget zip vim librabbitmq-dev libssh-dev \
     && apt-get install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
     && docker-php-ext-install intl pdo pdo_mysql zip gd soap \
-    && pecl install xdebug \
-    && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
+    && docker-php-ext-enable --ini-name 05-opcache.ini opcache
 
 RUN curl --insecure https://getcomposer.org/download/1.10.3/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
+RUN wget https://get.symfony.com/cli/installer -O - | bash
+RUN mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
 RUN wget https://cs.symfony.com/download/php-cs-fixer-v2.phar -O php-cs-fixer
 RUN chmod a+x php-cs-fixer
