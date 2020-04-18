@@ -37,7 +37,7 @@ class UserFixtures extends Fixture
             [
                 'id' => '0c9a412e-2f5a-41f8-b449-6f6bcd25e001',
                 'name' => 'Admin',
-                'email' => 'admin@api.com',
+                'email' => 'admin@cook-me.ck',
                 'password' => 'password',
                 'roles' => [
                     Role::ROLE_ADMIN,
@@ -47,7 +47,7 @@ class UserFixtures extends Fixture
             [
                 'id' => '0c9a412e-2f5a-41f8-b449-6f6bcd25e002',
                 'name' => 'User',
-                'email' => 'user@api.com',
+                'email' => 'user@cook-me.ck',
                 'password' => 'password',
                 'roles' => [Role::ROLE_USER],
             ],
