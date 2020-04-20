@@ -14,6 +14,7 @@ class RecipeController extends AbstractController
     /**
      * @Route("/recipes", name="app_get_all_recipes")
      * @param RecipeRepository $recipeRepository
+     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
     public function getAllRecipes(RecipeRepository $recipeRepository, SerializerInterface $serializer)

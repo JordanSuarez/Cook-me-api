@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class RecipeType.
@@ -16,11 +17,13 @@ class RecipeType
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"group_recipe_type"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @Groups({"group_recipe_type"})
      */
     private string $name;
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Ingredient.
@@ -22,6 +23,9 @@ class Ingredient
     private int $id;
     /**
      * @ORM\Column(type="string", length=30, unique=true, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(30)
      */
     private string $name;
     /**
@@ -41,6 +45,7 @@ class Ingredient
      * @var Quantity
      * @ORM\OneToOne(targetEntity="Quantity")
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
+     * @Assert\Type(type="App\Entity\Quantity")
      */
     private Quantity $quantity;
 

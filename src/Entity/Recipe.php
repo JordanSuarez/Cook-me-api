@@ -18,8 +18,8 @@ class Recipe
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @Groups({"group_recipe"})
      * @ORM\Column(type="integer")
+     * @Groups({"group_recipe"})
      */
     private int $id;
 
