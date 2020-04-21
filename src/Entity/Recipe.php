@@ -66,7 +66,6 @@ class Recipe
     /**
      * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
      * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
-     * @Groups({"group_recipe"})
      */
     private RecipeType $recipeType;
 
@@ -76,7 +75,6 @@ class Recipe
      *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")}
      * )
-     * @Groups({"group_recipe"})
      */
     private $ingredients;
 

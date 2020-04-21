@@ -39,19 +39,13 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $name
-     * @param string $instruction
-     * @param Ingredient $ingredient
-     * @param int $preparationTime
+     * @param Recipe $recipe
      * @return Recipe
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function create(string $name, string $instruction, Ingredient $ingredient, int $preparationTime): Recipe
+    public function create(Recipe $recipe): Recipe
     {
-        $recipe = new Recipe($name, $instruction);
-        $recipe->setPreparationTime($preparationTime);
-        $recipe->addIngredient($ingredient);
         $this->save($recipe);
         return $recipe;
     }
