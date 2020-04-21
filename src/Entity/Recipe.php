@@ -6,6 +6,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Recipe.
@@ -25,35 +26,47 @@ class Recipe
 
     /**
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(50)
+     * @Assert\Unique()
      * @Groups({"group_recipe"})
      */
     private string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\PositiveOrZero()
      * @Groups({"group_recipe"})
      */
     private ?int $preparationTime;
 
     /**
      * @ORM\Column(type="text", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      * @Groups({"group_recipe"})
      */
     private string $instruction;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private ?DateTime $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
      * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
+     * @Groups({"group_recipe"})
      */
     private RecipeType $recipeType;
 
@@ -63,6 +76,7 @@ class Recipe
      *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")}
      * )
+     * @Groups({"group_recipe"})
      */
     private $ingredients;
 

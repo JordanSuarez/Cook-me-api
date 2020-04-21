@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class RecipeTypeController extends AbstractController
 {
     /**
-     * @Route("/recipe-types", name="app_get_all_recipe_types")
+     * @Route("/recipe-types", name="app_get_all_recipe_types", methods={"GET"})
      * @param RecipeTypeRepository $recipeTypeRepository
      * @param SerializerInterface $serializer
      * @return JsonResponse

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class QuantityType.
@@ -15,11 +17,17 @@ class QuantityType
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"group_quantity_type"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=30, unique=true, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(30)
+     * @Assert\Unique()
+     * @Groups({"group_quantity_type"})
      */
     private string $name;
 

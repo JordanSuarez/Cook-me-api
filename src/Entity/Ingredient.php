@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -19,6 +20,7 @@ class Ingredient
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"group_ingredient"})
      */
     private int $id;
     /**
@@ -26,18 +28,27 @@ class Ingredient
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Length(30)
+     * @Assert\Unique()
+     * @Groups({"group_ingredient"})
+     * @Groups({"group_recipe"})
      */
     private string $name;
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Assert\Length(50)
+     * @Groups({"group_ingredient"})
      */
     private string $description;
     /**
      * @ORM\Column(type="datetime", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private DateTime $createdAt;
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private DateTime $updatedAt;
 
@@ -46,6 +57,7 @@ class Ingredient
      * @ORM\OneToOne(targetEntity="Quantity")
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\Quantity")
+     * @Groups({"group_recipe"})
      */
     private Quantity $quantity;
 

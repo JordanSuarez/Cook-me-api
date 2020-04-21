@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Quantity.
@@ -15,11 +17,17 @@ class Quantity
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"group_quantity"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="float", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Positive()
+     * @Groups({"group_quantity"})
+     * @Groups({"group_recipe"})
      */
     private string $number;
 
@@ -32,7 +40,6 @@ class Quantity
 
     /**
      * Number constructor.
-     *
      * @param int|string $number
      */
     public function __construct($number)

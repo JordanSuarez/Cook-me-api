@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class RecipeType.
@@ -23,7 +24,12 @@ class RecipeType
 
     /**
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Type(50)
+     * @Assert\Unique()
      * @Groups({"group_recipe_type"})
+     * @Groups({"group_recipe"})
      */
     private string $name;
 

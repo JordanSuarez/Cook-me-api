@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class QuantityTypeController extends AbstractController
 {
     /**
-     * @Route("/quantityTypes", name="app_get_all_quantityTypes")
+     * @Route("/quantity-types", name="app_get_all_quantity_types", methods={"GET"})
      * @param QuantityTypeRepository $quantityTypeRepository
      * @param SerializerInterface $serializer
      * @return JsonResponse
@@ -22,6 +22,6 @@ class QuantityTypeController extends AbstractController
     public function getAllQuantityTypes(QuantityTypeRepository $quantityTypeRepository, SerializerInterface $serializer)
     {
         $quantityTypes = $quantityTypeRepository->findAll();
-        return new JsonResponse(json_decode($serializer->serialize($quantityTypes, 'json', ['groups' => 'group_quantityType'])));
+        return new JsonResponse(json_decode($serializer->serialize($quantityTypes, 'json', ['groups' => 'group_quantity_type'])));
     }
 }
