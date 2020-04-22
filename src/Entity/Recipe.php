@@ -196,7 +196,7 @@ class Recipe
     }
 
     /**
-     * @return
+     * @return ArrayCollection
      */
     public function getIngredients()
     {

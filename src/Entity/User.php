@@ -89,14 +89,6 @@ class User
     }
 
     /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
-
-    /**
      * @return string
      */
     public function getFirstName(): string
@@ -177,17 +169,17 @@ class User
     }
 
     /**
-     * @return Recipe
+     * @return ArrayCollection
      */
-    public function getRecipes(): Recipe
+    public function getRecipes()
     {
         return $this->recipes;
     }
 
     /**
-     * @param Recipe $recipes
+     * @param array $recipes
      */
-    public function setRecipes(Recipe $recipes): void
+    public function setRecipes(array $recipes): void
     {
         $this->recipes = $recipes;
     }
