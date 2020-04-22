@@ -13,24 +13,36 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeController extends BaseController
 {
+    /** @var RecipeRepository  */
+    private RecipeRepository $recipeRepository;
+
+    /**
+     * RecipeController constructor.
+     * @param RecipeRepository $recipeRepository
+     * @param SerializerInterface $serialize
+     */
+    public function __construct(RecipeRepository $recipeRepository, SerializerInterface $serialize)
+    {
+        parent::__construct($serialize);
+        $this->recipeRepository = $recipeRepository;
+    }
+
+
     /**
      * @Route("/recipes", name="app_get_all_recipes", methods={"GET"})
-     * @param RecipeRepository $recipeRepository
      * @return JsonResponse
      */
-    public function getAll(RecipeRepository $recipeRepository)
+    public function getAll()
     {
-        $recipes = $recipeRepository->findAll();
-        return $this->recipeJson();
+        $recipes = $this->recipeRepository->findAll();
 
-//      return new JsonResponse(json_decode($serializer->serialize($recipes, 'json', ['groups' => 'group_recipe'])));
+        return $this->response($recipes, Recipe::GROUP_RECIPE);
     }
 
     /**
      * @Route("/recipe", name="app_get_one_recipe", methods={"GET"})
-     * @param RecipeRepository $recipeRepository
      */
-    public function getOne(RecipeRepository $recipeRepository)
+    public function getOne()
     {
 
     }
@@ -38,18 +50,15 @@ class RecipeController extends BaseController
     /**
      * @Route("/recipes", name="app_post_recipe", methods={"POST"})
      * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param RecipeRepository $recipeRepository
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Request $request, SerializerInterface $serializer, RecipeRepository $recipeRepository)
+    public function create(Request $request)
     {
-        $content = $request->getContent();
         /** @var Recipe $recipe */
-        $recipe = $serializer->deserialize($content, Recipe::Class, 'json', ['groups' => 'group_recipe']);
-        $recipeRepository->create($recipe);
-        return new JsonResponse(json_decode($serializer->serialize($recipe, 'json', ['groups' => 'group_recipe'])));
+        $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
+
+        return $this->response($this->recipeRepository->create($recipe), Recipe::GROUP_RECIPE);
     }
 }

@@ -16,11 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Recipe
 {
+    const GROUP_RECIPE = 'group_recipe';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"group_recipe"})
+     * @Groups({Recipe::GROUP_RECIPE})
      */
     private int $id;
 
@@ -30,14 +32,14 @@ class Recipe
      * @Assert\NotBlank()
      * @Assert\Length(50)
      * @Assert\Unique()
-     * @Groups({"group_recipe"})
+     * @Groups({Recipe::GROUP_RECIPE})
      */
     private string $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero()
-     * @Groups({"group_recipe"})
+     * @Groups({"Recipe::GROUP_RECIPE"})
      */
     private ?int $preparationTime;
 
@@ -45,7 +47,7 @@ class Recipe
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
-     * @Groups({"group_recipe"})
+     * @Groups({"Recipe::GROUP_RECIPE"})
      */
     private string $instruction;
 
