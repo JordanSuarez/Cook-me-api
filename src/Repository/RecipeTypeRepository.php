@@ -38,14 +38,13 @@ class RecipeTypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $name
+     * @param RecipeType $recipeType
      * @return RecipeType
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(string $name): RecipeType
+    public function create(RecipeType $recipeType): RecipeType
     {
-        $recipeType = new RecipeType($name);
         $this->save($recipeType);
         return $recipeType;
     }

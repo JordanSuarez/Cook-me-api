@@ -39,17 +39,13 @@ class IngredientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param string $name
-     * @param string $description
-     * @param Quantity $quantity
+     * @param Ingredient $ingredient
      * @return Ingredient
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(string $name, string $description, Quantity $quantity):Ingredient
+    public function create(Ingredient $ingredient):Ingredient
     {
-        $ingredient = new Ingredient($name, $description);
-        $ingredient->setQuantity($quantity);
         $this->save($ingredient);
         return $ingredient;
     }

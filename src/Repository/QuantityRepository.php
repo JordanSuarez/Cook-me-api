@@ -39,16 +39,13 @@ class QuantityRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param int $number
-     * @param QuantityType $quantityType
+     * @param Quantity $quantity
      * @return Quantity
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(int $number, QuantityType $quantityType): Quantity
+    public function create(Quantity $quantity): Quantity
     {
-        $quantity = new Quantity($number);
-        $quantity->setQuantityType($quantityType);
         $this->save($quantity);
         return $quantity;
     }

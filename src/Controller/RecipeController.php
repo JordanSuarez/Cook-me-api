@@ -3,29 +3,36 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use App\Entity\Ingredient;
 use App\Repository\RecipeRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class RecipeController extends AbstractController
+class RecipeController extends BaseController
 {
     /**
      * @Route("/recipes", name="app_get_all_recipes", methods={"GET"})
      * @param RecipeRepository $recipeRepository
-     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function getAll(RecipeRepository $recipeRepository, SerializerInterface $serializer)
+    public function getAll(RecipeRepository $recipeRepository)
     {
         $recipes = $recipeRepository->findAll();
-        return new JsonResponse(json_decode($serializer->serialize($recipes, 'json', ['groups' => 'group_recipe'])));
+        return $this->recipeJson();
+
+//      return new JsonResponse(json_decode($serializer->serialize($recipes, 'json', ['groups' => 'group_recipe'])));
+    }
+
+    /**
+     * @Route("/recipe", name="app_get_one_recipe", methods={"GET"})
+     * @param RecipeRepository $recipeRepository
+     */
+    public function getOne(RecipeRepository $recipeRepository)
+    {
+
     }
 
     /**
@@ -46,5 +53,3 @@ class RecipeController extends AbstractController
         return new JsonResponse(json_decode($serializer->serialize($recipe, 'json', ['groups' => 'group_recipe'])));
     }
 }
-
-

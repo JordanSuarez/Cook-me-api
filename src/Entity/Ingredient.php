@@ -30,7 +30,6 @@ class Ingredient
      * @Assert\Length(30)
      * @Assert\Unique()
      * @Groups({"group_ingredient"})
-     * @Groups({"group_recipe"})
      */
     private string $name;
     /**
@@ -57,7 +56,6 @@ class Ingredient
      * @ORM\OneToOne(targetEntity="Quantity")
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\Quantity")
-     * @Groups({"group_recipe"})
      */
     private Quantity $quantity;
 

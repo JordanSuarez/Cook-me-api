@@ -30,8 +30,8 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * @param $entity
      * @param bool $persist
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     private function save($entity, $persist = true) {
         if($persist) $this->_em->persist($entity);
