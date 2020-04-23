@@ -16,11 +16,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Ingredient
 {
+    const GROUP_INGREDIENT = 'group_ingredient';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"group_ingredient"})
+     * @Groups({Ingredient::GROUP_INGREDIENT})
      */
     private int $id;
     /**
@@ -29,13 +30,13 @@ class Ingredient
      * @Assert\NotBlank()
      * @Assert\Length(30)
      * @Assert\Unique()
-     * @Groups({"group_ingredient"})
+     * @Groups({Ingredient::GROUP_INGREDIENT})
      */
     private string $name;
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Assert\Length(50)
-     * @Groups({"group_ingredient"})
+     * @Groups({Ingredient::GROUP_INGREDIENT})
      */
     private string $description;
     /**

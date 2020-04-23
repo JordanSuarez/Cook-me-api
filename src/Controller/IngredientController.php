@@ -15,33 +15,45 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class IngredientController extends BaseController
 {
+    /** @var IngredientRepository  */
+    private IngredientRepository $ingredientRepository;
+
+    /**
+     * RecipeController constructor.
+     * @param IngredientRepository $ingredientRepository
+     * @param SerializerInterface $serialize
+     */
+    public function __construct(IngredientRepository $ingredientRepository, SerializerInterface $serialize)
+    {
+        parent::__construct($serialize);
+        $this->ingredientRepository = $ingredientRepository;
+    }
+
     /**
      * @Route("/ingredients", name="app_get_all_ingredients", methods={"GET"})
      * @param IngredientRepository $ingredientRepository
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function getAllIngredients(IngredientRepository $ingredientRepository, SerializerInterface $serializer)
+    public function getAll(IngredientRepository $ingredientRepository, SerializerInterface $serializer)
     {
         $ingredients = $ingredientRepository->findAll();
-        return new JsonResponse(json_decode($serializer->serialize($ingredients, 'json', ['groups' => 'group_ingredient'])));
+
+        return $this->response($ingredients, Ingredient::GROUP_INGREDIENT);
     }
 
     /**
      * @Route("/ingredients", name="app_post_ingredient", methods={"POST"})
      * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param IngredientRepository $ingredientRepository
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Request $request, SerializerInterface $serializer, IngredientRepository $ingredientRepository)
+    public function create(Request $request)
     {
-        $content = $request->getContent();
         /** @var Ingredient $ingredient */
-        $ingredient = $serializer->deserialize($content, Ingredient::Class, 'json', ['groups' => 'group_ingredient']);
-        $ingredientRepository->create($ingredient);
-        return new JsonResponse(json_decode($serializer->serialize($ingredient, 'json', ['groups' => 'group_ingredient'])));
+        $ingredient = $this->handleRequest(Ingredient::class, Ingredient::GROUP_INGREDIENT, $request);
+
+        return $this->response($this->ingredientRepository->create($ingredient), Ingredient::GROUP_INGREDIENT);
     }
 }

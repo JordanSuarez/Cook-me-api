@@ -14,11 +14,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RecipeType
 {
+    const GROUP_RECIPE_TYPE = 'group_recipe_type';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"group_recipe_type"})
+     * @Groups({RecipeType::GROUP_RECIPE_TYPE})
      */
     private int $id;
 
@@ -28,8 +29,7 @@ class RecipeType
      * @Assert\NotBlank()
      * @Assert\Type(50)
      * @Assert\Unique()
-     * @Groups({"group_recipe_type"})
-     * @Groups({"group_recipe"})
+     * @Groups({RecipeType::GROUP_RECIPE_TYPE})
      */
     private string $name;
 

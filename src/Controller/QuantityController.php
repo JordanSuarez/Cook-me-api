@@ -4,10 +4,12 @@
 namespace App\Controller;
 
 
+use App\Entity\Ingredient;
 use App\Entity\Quantity;
 use App\Repository\QuantityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,33 +17,38 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class QuantityController extends BaseController
 {
+    /**@var QuantityRepository */
+    private QuantityRepository $quantityRepository;
+
+    public function __construct(QuantityRepository $quantityRepository, SerializerInterface $serialize)
+    {
+        parent::__construct($serialize);
+        $this->quantityRepository = $quantityRepository;
+    }
+
     /**
      * @Route("/quantities", name="app_get_all_quantities", methods={"GET"})
-     * @param QuantityRepository $quantityRepository
-     * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function getAllRecipeType(QuantityRepository $quantityRepository, SerializerInterface $serializer)
+    public function getAll()
     {
-        $quantities = $quantityRepository->findAll();
-        return new JsonResponse(json_decode($serializer->serialize($quantities, 'json', ['groups' => 'group_quantity'])));
+        $quantities = $this->quantityRepository->findAll();
+
+        return $this->response($quantities, Quantity::GROUP_QUANTITY);
     }
 
     /**
      * @Route("/quantities", name="app_post_quantities", methods={"POST"})
      * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param QuantityRepository $quantityRepository
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Request $request, SerializerInterface $serializer, QuantityRepository $quantityRepository)
+    public function create(Request $request)
     {
-        $content = $request->getContent();
         /** @var Quantity $quantity */
-        $quantity = $serializer->deserialize($content, Quantity::Class, 'json', ['groups' => 'group_quantity']);
-        $quantityRepository->create($quantity);
-        return new JsonResponse(json_decode($serializer->serialize($quantity, 'json', ['groups' => 'group_quantity'])));
+        $quantity = $this->handleRequest(Quantity::class, Quantity::GROUP_QUANTITY, $request);
+
+        return $this->response($this->quantityRepository->create($quantity), QUantity::GROUP_QUANTITY);
     }
 }

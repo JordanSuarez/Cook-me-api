@@ -42,6 +42,7 @@ class BaseController extends AbstractController
     protected function handleRequest($instanceType, string $group, Request $request)
     {
         $content = $request->getContent();
+
         return $this->serializer->deserialize($content, $instanceType, self::FORMAT, ['groups' => $group]);
     }
 }

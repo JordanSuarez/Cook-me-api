@@ -39,7 +39,7 @@ class Recipe
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\PositiveOrZero()
-     * @Groups({"Recipe::GROUP_RECIPE"})
+     * @Groups({Recipe::GROUP_RECIPE})
      */
     private ?int $preparationTime;
 
@@ -47,7 +47,7 @@ class Recipe
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
-     * @Groups({"Recipe::GROUP_RECIPE"})
+     * @Groups({Recipe::GROUP_RECIPE})
      */
     private string $instruction;
 

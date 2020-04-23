@@ -27,7 +27,6 @@ class RecipeController extends BaseController
         $this->recipeRepository = $recipeRepository;
     }
 
-
     /**
      * @Route("/recipes", name="app_get_all_recipes", methods={"GET"})
      * @return JsonResponse
@@ -40,7 +39,7 @@ class RecipeController extends BaseController
     }
 
     /**
-     * @Route("/recipe", name="app_get_one_recipe", methods={"GET"})
+     * @Route("/recipes", name="app_get_one_recipe", methods={"GET"})
      */
     public function getOne()
     {

@@ -15,33 +15,43 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeTypeController extends BaseController
 {
+    /** @var RecipeTypeRepository */
+    private RecipeTypeRepository $recipeTypeRepository;
+
     /**
-     * @Route("/recipe-types", name="app_get_all_recipe_types", methods={"GET"})
+     * RecipeTypeController constructor.
      * @param RecipeTypeRepository $recipeTypeRepository
      * @param SerializerInterface $serializer
+     */
+    public function __construct(RecipeTypeRepository $recipeTypeRepository, SerializerInterface $serializer)
+    {
+        parent::__construct($serializer);
+        $this->recipeTypeRepository = $recipeTypeRepository;
+    }
+
+    /**
+     * @Route("/recipe-types", name="app_get_all_recipe_types", methods={"GET"})
      * @return JsonResponse
      */
-    public function getAllRecipeType(RecipeTypeRepository $recipeTypeRepository, SerializerInterface $serializer)
+    public function getAll()
     {
-        $recipeTypes = $recipeTypeRepository->findAll();
-        return new JsonResponse(json_decode($serializer->serialize($recipeTypes, 'json', ['groups' => 'group_recipe_type'])));
+        $recipeTypes = $this->recipeTypeRepository->findAll();
+
+        return $this->response($recipeTypes, RecipeType::GROUP_RECIPE_TYPE);
     }
 
     /**
      * @Route("/recipe-types", name="app_post_recipe_types", methods={"POST"})
      * @param Request $request
-     * @param SerializerInterface $serializer
-     * @param RecipeTypeRepository $recipeTypeRepository
      * @return JsonResponse
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Request $request, SerializerInterface $serializer, RecipeTypeRepository $recipeTypeRepository)
+    public function create(Request $request)
     {
-        $content = $request->getContent();
         /** @var RecipeType $recipeType */
-        $recipeType = $serializer->deserialize($content, RecipeType::Class, 'json', ['groups' => 'group_recipe_type']);
-        $recipeTypeRepository->create($recipeType);
-        return new JsonResponse(json_decode($serializer->serialize($recipeType, 'json', ['groups' => 'group_recipe_type'])));
+        $recipeType = $this->handleRequest(RecipeType::class, RecipeType::GROUP_RECIPE_TYPE, $request);
+
+        return $this->response($this->recipeTypeRepository->create($recipeType),RecipeType::GROUP_RECIPE_TYPE);
     }
 }

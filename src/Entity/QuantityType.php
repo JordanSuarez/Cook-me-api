@@ -13,11 +13,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class QuantityType
 {
+    const GROUP_QUANTITY_TYPE = 'group_quantity_type';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups({"group_quantity_type"})
+     * @Groups({QuantityType::GROUP_QUANTITY_TYPE})
      */
     private int $id;
 
@@ -27,7 +28,7 @@ class QuantityType
      * @Assert\NotBlank()
      * @Assert\Length(30)
      * @Assert\Unique()
-     * @Groups({"group_quantity_type"})
+     * @Groups({QuantityType::GROUP_QUANTITY_TYPE})
      */
     private string $name;
 
