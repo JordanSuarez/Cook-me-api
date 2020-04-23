@@ -43,6 +43,17 @@ class IngredientController extends BaseController
     }
 
     /**
+     * @Route("/ingredient", name="app_get_one_ingredient", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getOne()
+    {
+        $ingredient = $this->ingredientRepository->findOneBy(['description' => 'ingredient_description16']);
+
+        return $this->response($ingredient, Ingredient::GROUP_INGREDIENT);
+    }
+
+    /**
      * @Route("/ingredients", name="app_post_ingredient", methods={"POST"})
      * @param Request $request
      * @return JsonResponse

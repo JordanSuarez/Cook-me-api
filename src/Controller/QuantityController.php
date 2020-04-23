@@ -38,6 +38,16 @@ class QuantityController extends BaseController
     }
 
     /**
+     * @Route("/quantity", name="app_get_one_quantity", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getOne()
+    {
+        $quantity = $this->quantityRepository->findOneBy(['number' => '2']);
+
+        return $this->response($quantity, Quantity::GROUP_QUANTITY);
+    }
+    /**
      * @Route("/quantities", name="app_post_quantities", methods={"POST"})
      * @param Request $request
      * @return JsonResponse

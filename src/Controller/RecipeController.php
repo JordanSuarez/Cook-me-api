@@ -39,11 +39,13 @@ class RecipeController extends BaseController
     }
 
     /**
-     * @Route("/recipes", name="app_get_one_recipe", methods={"GET"})
+     * @Route("/recipe", name="app_get_one_recipe", methods={"GET"})
      */
     public function getOne()
     {
+        $recipe = $this->recipeRepository->findOneBy(['name' => 'recipe name 8']);
 
+        return $this->response($recipe, Recipe::GROUP_RECIPE);
     }
 
     /**

@@ -41,6 +41,17 @@ class RecipeTypeController extends BaseController
     }
 
     /**
+     * @Route("/recipe-type", name="app_get_one_recipe_types", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getOne()
+    {
+        $recipeType = $this->recipeTypeRepository->findOneBy(['name' => 'type name 0']);
+
+        return $this->response($recipeType, RecipeType::GROUP_RECIPE_TYPE);
+    }
+
+    /**
      * @Route("/recipe-types", name="app_post_recipe_types", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
