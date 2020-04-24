@@ -8,6 +8,8 @@ use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,13 +45,13 @@ class IngredientController extends BaseController
     }
 
     /**
-     * @Route("/ingredient", name="app_get_one_ingredient", methods={"GET"})
+     * @Route("/ingredients/{ingredient_id}", name="app_get_one_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"GET"})
+     * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
+     * @param Ingredient $ingredient
      * @return JsonResponse
      */
-    public function getOne()
+    public function getOne(Ingredient $ingredient)
     {
-        $ingredient = $this->ingredientRepository->findOneBy(['description' => 'ingredient_description16']);
-
         return $this->response($ingredient, Ingredient::GROUP_INGREDIENT);
     }
 
