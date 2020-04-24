@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User implements JWTUserInterface
 {
@@ -41,7 +42,7 @@ class User implements JWTUserInterface
     private string $email;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      */
     private string $password;
 
