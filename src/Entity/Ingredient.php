@@ -50,7 +50,7 @@ class Ingredient
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
-    private DateTime $updatedAt;
+    private ?DateTime $updatedAt;
 
     /**
      * @var Quantity
@@ -130,7 +130,7 @@ class Ingredient
     /**
      * @return DateTime
      */
-    public function getUpdatedAt(): DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }

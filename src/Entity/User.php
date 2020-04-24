@@ -6,13 +6,14 @@ namespace App\Entity;
 Use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUser;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
  */
-class User
+class User implements JWTUserInterface
 {
     /**
      * @ORM\Id
@@ -22,20 +23,12 @@ class User
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=30, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
-     * @Assert\Length(30)
+     * @Assert\Length(50)
      */
-    private string $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=false)
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     * @Assert\Length(30)
-     */
-    private string $lastName;
+    private string $username;
 
     /**
      * @ORM\Column(type="string", length=50, unique=true, nullable=false)
@@ -45,12 +38,17 @@ class User
      * @Assert\Email()
      * @Assert\Unique()
      */
-    private string $emailAddress;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=false)
      */
     private string $password;
+
+    /**
+     * @var array
+     */
+    private array $roles;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -68,16 +66,40 @@ class User
 
     /**
      * User constructor.
-     * @param string $firstName
-     * @param string $lastName
-     * @param string $emailAddress
+     * @param string $username
+     * @param array $roles
+     * @param string $email
      */
-    public function __construct(string $firstName, string $lastName, string $emailAddress)
+    public function __construct(string $username, array $roles, string $email)
     {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->emailAddress = $emailAddress;
+        $this->username = $username;
+        $this->roles = $roles;
+        $this->email = $email;
         $this->recipes = new ArrayCollection();
+    }
+
+    /**
+     * @param string $username
+     * @param array $payload
+     * @return User|JWTUserInterface
+     */
+    public static function createFromPayload($username, array $payload)
+    {
+        return new self(
+            $username,
+            $payload['$email'],
+            $payload['$roles']
+        );
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 
     /**
@@ -91,49 +113,33 @@ class User
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getUsername(): string
     {
-        return $this->firstName;
+        return $this->username;
     }
 
     /**
-     * @param string $firstName
+     * @param string $username
      */
-    public function setFirstName(string $firstName): void
+    public function setUsername(string $username): void
     {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     */
-    public function setLastName(string $lastName): void
-    {
-        $this->lastName = $lastName;
+        $this->username = $username;
     }
 
     /**
      * @return string
      */
-    public function getEmailAddress(): string
+    public function getEmail(): string
     {
-        return $this->emailAddress;
+        return $this->email;
     }
 
     /**
-     * @param string $emailAddress
+     * @param string $email
      */
-    public function setEmailAddress(string $emailAddress): void
+    public function setEmail(string $email): void
     {
-        $this->emailAddress = $emailAddress;
+        $this->email = $email;
     }
 
     /**
@@ -153,6 +159,22 @@ class User
     }
 
     /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
+    {
+        $this->roles = $roles;
+    }
+
+    /**
      * @return DateTime
      */
     public function getCreatedAt(): DateTime
@@ -161,25 +183,25 @@ class User
     }
 
     /**
-     * @param DateTime $createdAt
+     * @ORM\PrePersist()
      */
-    public function setCreatedAt(DateTime $createdAt): void
+    public function setCreatedAt(): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getRecipes()
+    public function getRecipes(): ArrayCollection
     {
         return $this->recipes;
     }
 
     /**
-     * @param array $recipes
+     * @param ArrayCollection $recipes
      */
-    public function setRecipes(array $recipes): void
+    public function setRecipes(ArrayCollection $recipes): void
     {
         $this->recipes = $recipes;
     }
