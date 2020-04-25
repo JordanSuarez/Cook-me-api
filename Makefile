@@ -41,6 +41,12 @@ migrations-diff: ## Runs the migrations
 fixtures: ## Load the fixtures
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_API} bin/console doctrine:fixtures:load
 
+drop-database: ## Drop the database
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_API} bin/console doctrine:database:drop --force
+
+create-database: ## Drop the database
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_API} bin/console doctrine:database:create
+
 api-logs: ## Tails the Symfony dev log
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_API} tail -f var/log/dev.log
 # End backend commands

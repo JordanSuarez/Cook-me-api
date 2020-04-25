@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200418144701 extends AbstractMigration
+final class Version20200425141039 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -24,6 +24,7 @@ final class Version20200418144701 extends AbstractMigration
 
         $this->addSql('CREATE TABLE quantity (id INT AUTO_INCREMENT NOT NULL, quantity_type_id INT DEFAULT NULL, number DOUBLE PRECISION NOT NULL, INDEX IDX_9FF3163636F84596 (quantity_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE recipe_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(50) NOT NULL, UNIQUE INDEX UNIQ_F3C50DF65E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, username VARCHAR(50) NOT NULL, password VARCHAR(255) NOT NULL, roles JSON NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ingredient (id INT AUTO_INCREMENT NOT NULL, quantity_id INT DEFAULT NULL, name VARCHAR(30) NOT NULL, description VARCHAR(50) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_6BAF78705E237E06 (name), UNIQUE INDEX UNIQ_6BAF78707E8B4AFC (quantity_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE quantity_type (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(30) NOT NULL, UNIQUE INDEX UNIQ_CBB3390B5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE recipe (id INT AUTO_INCREMENT NOT NULL, recipe_type_id INT DEFAULT NULL, name VARCHAR(50) NOT NULL, preparation_time INT DEFAULT NULL, instruction LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME DEFAULT NULL, UNIQUE INDEX UNIQ_DA88B1375E237E06 (name), INDEX IDX_DA88B13789A882D3 (recipe_type_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -47,6 +48,7 @@ final class Version20200418144701 extends AbstractMigration
         $this->addSql('ALTER TABLE recipes_ingredients DROP FOREIGN KEY FK_761206B059D8A214');
         $this->addSql('DROP TABLE quantity');
         $this->addSql('DROP TABLE recipe_type');
+        $this->addSql('DROP TABLE user');
         $this->addSql('DROP TABLE ingredient');
         $this->addSql('DROP TABLE quantity_type');
         $this->addSql('DROP TABLE recipe');
