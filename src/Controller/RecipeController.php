@@ -62,6 +62,6 @@ class RecipeController extends BaseController
         /** @var Recipe $recipe */
         $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
 
-        return $this->response($this->recipeRepository->create($recipe), Recipe::GROUP_RECIPE);
+//        return $this->response($this->recipeRepository->create($recipe, //recupuérer la clé ingredients), Recipe::GROUP_RECIPE);
     }
 }

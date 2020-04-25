@@ -44,8 +44,12 @@ class RecipeRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Recipe $recipe): Recipe
+    public function create(Recipe $recipe, array $ingredientsIds): Recipe
     {
+        // add ingredient
+//        foreach ($ingredientsIds as id) {
+//            $recipe->addIngredient(//find id ingredient);
+//        }
         $this->save($recipe);
         return $recipe;
     }
