@@ -6,6 +6,7 @@ use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,12 +40,13 @@ class RecipeController extends BaseController
     }
 
     /**
-     * @Route("/recipe", name="app_get_one_recipe", methods={"GET"})
+     * @Route("/recipes/{recipe_id}", name="app_get_one_recipe", requirements={"recipe_id": "\d+"}, methods={"GET"})
+     * @ParamConverter("recipe", options={"id" = "recipe_id"})
+     * @param Recipe $recipe
+     * @return JsonResponse
      */
-    public function getOne()
+    public function getOne(Recipe $recipe)
     {
-        $recipe = $this->recipeRepository->findOneBy(['name' => 'recipe name 8']);
-
         return $this->response($recipe, Recipe::GROUP_RECIPE);
     }
 

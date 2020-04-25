@@ -9,7 +9,7 @@ use App\Entity\Quantity;
 use App\Repository\QuantityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use phpDocumentor\Reflection\Types\This;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,15 +38,16 @@ class QuantityController extends BaseController
     }
 
     /**
-     * @Route("/quantity", name="app_get_one_quantity", methods={"GET"})
+     * @Route("/quantities/{quantity_id}", name="app_get_one_quantity", requirements={"quantity_id": "\d+"}, methods={"GET"})
+     * @ParamConverter("quantity", options={"id" = "quantity_id"})
+     * @param Quantity $quantity
      * @return JsonResponse
      */
-    public function getOne()
+    public function getOne(Quantity $quantity)
     {
-        $quantity = $this->quantityRepository->findOneBy(['number' => '2']);
-
         return $this->response($quantity, Quantity::GROUP_QUANTITY);
     }
+
     /**
      * @Route("/quantities", name="app_post_quantities", methods={"POST"})
      * @param Request $request

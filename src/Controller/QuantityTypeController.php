@@ -8,6 +8,7 @@ use App\Entity\QuantityType;
 use App\Repository\QuantityTypeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,15 +42,16 @@ class QuantityTypeController extends BaseController
     }
 
     /**
-     * @Route("/quantity-type", name="app_get_one_quantity_type", methods={"GET"})
+     * @Route("/quantity-types/{quantity_type_id}", name="app_get_one_quantity_type", requirements={"quantity_type_id": "\d+"}, methods={"GET"})
+     * @ParamConverter("quantityType", options={"id" = "quantity_type_id"})
+     * @param QuantityType $quantityType
      * @return JsonResponse
      */
-    public function getOne()
+    public function getOne(QuantityType $quantityType)
     {
-        $quantityType = $this->quantityTypeRepository->findOneBy(['id' => '130']);
-
         return $this->response($quantityType, QuantityType::GROUP_QUANTITY_TYPE);
     }
+
     /**
      * @Route("/quantity-types", name="app_post_quantity_types", methods={"POST"})
      * @param Request $request

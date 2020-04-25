@@ -8,6 +8,7 @@ use App\Entity\RecipeType;
 use App\Repository\RecipeTypeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,13 +42,13 @@ class RecipeTypeController extends BaseController
     }
 
     /**
-     * @Route("/recipe-type", name="app_get_one_recipe_types", methods={"GET"})
+     * @Route("/recipe-types/{recipe_type_id}", name="app_get_one_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"GET"})
+     * @ParamConverter("recipeType", options={"id" = "quantity_type_id"})
+     * @param RecipeType $recipeType
      * @return JsonResponse
      */
-    public function getOne()
+    public function getOne(RecipeType $recipeType)
     {
-        $recipeType = $this->recipeTypeRepository->findOneBy(['name' => 'type name 0']);
-
         return $this->response($recipeType, RecipeType::GROUP_RECIPE_TYPE);
     }
 
