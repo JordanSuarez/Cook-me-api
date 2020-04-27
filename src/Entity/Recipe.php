@@ -27,11 +27,10 @@ class Recipe
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=50, unique=true, nullable=false)
+     * @ORM\Column(type="string", length=50, nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Length(50)
-     * @Assert\Unique()
      * @Groups({Recipe::GROUP_RECIPE})
      */
     private string $name;

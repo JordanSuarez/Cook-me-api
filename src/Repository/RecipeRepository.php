@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Ingredient;
+use App\Entity\Quantity;
 use App\Entity\Recipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -18,13 +19,37 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RecipeRepository extends ServiceEntityRepository
 {
+    /** @var QuantityRepository  */
+    private QuantityRepository $quantityRepository;
+
+    /** @var IngredientRepository  */
+    private IngredientRepository $ingredientRepository;
+
+    /** @var RecipeTypeRepository  */
+    private RecipeTypeRepository $recipeTypeRepository;
+
+    /** @var QuantityTypeRepository */
+    private QuantityTypeRepository $quantityTypeRepository;
+
     /**
      * RecipeRepository constructor.
      * @param ManagerRegistry $registry
+     * @param QuantityRepository $quantityRepository
+     * @param IngredientRepository $ingredientRepository
+     * @param RecipeTypeRepository $recipeTypeRepository
+     * @param QuantityTypeRepository $quantityTypeRepository
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry,
+                                QuantityRepository $quantityRepository,
+                                IngredientRepository $ingredientRepository,
+                                RecipeTypeRepository $recipeTypeRepository,
+                                QuantityTypeRepository $quantityTypeRepository)
     {
         parent::__construct($registry, Recipe::class);
+        $this->quantityRepository = $quantityRepository;
+        $this->ingredientRepository = $ingredientRepository;
+        $this->recipeTypeRepository = $recipeTypeRepository;
+        $this->quantityTypeRepository = $quantityTypeRepository;
     }
 
     /**
@@ -40,16 +65,31 @@ class RecipeRepository extends ServiceEntityRepository
 
     /**
      * @param Recipe $recipe
+     * @param array $ingredientsData
+     * @param int $recipeTypeData
      * @return Recipe
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Recipe $recipe, array $ingredientsIds): Recipe
+    public function create(Recipe $recipe, array $ingredientsData, int $recipeTypeData): Recipe
     {
-        // add ingredient
-//        foreach ($ingredientsIds as id) {
-//            $recipe->addIngredient(//find id ingredient);
-//        }
+        foreach ($ingredientsData as $ingredientData) {
+            // Handle Quantity
+            $quantityData = $ingredientData['quantity'];
+            $quantity = new Quantity($quantityData['number']);
+            $quantityType = $this->quantityTypeRepository->find($quantityData['type_id']);
+            $quantity->setQuantityType($quantityType);
+            $this->quantityRepository->create($quantity);
+
+            // Handle Ingredient
+            /** @var Ingredient $ingredient */
+            $ingredient = $this->ingredientRepository->find($ingredientData['id']);
+            $recipe->addIngredient($ingredient);
+        }
+        // Handle RecipeType
+        $recipeType = $this->recipeTypeRepository->find($recipeTypeData);
+        $recipe->setRecipeType($recipeType);
+
         $this->save($recipe);
         return $recipe;
     }

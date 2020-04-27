@@ -6,6 +6,8 @@ use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +63,13 @@ class RecipeController extends BaseController
     {
         /** @var Recipe $recipe */
         $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
+        $data = json_decode($request->getContent(), true);
+        try {
+            $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
+            return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
+        } catch (ORMInvalidArgumentException $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
-//        return $this->response($this->recipeRepository->create($recipe, //recupuérer la clé ingredients), Recipe::GROUP_RECIPE);
     }
 }

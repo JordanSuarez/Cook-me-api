@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,12 +26,13 @@ class BaseController extends AbstractController
 
     /**
      * @param $object
-     * @param $group
+     * @param string $group
+     * @param $statusCode
      * @return JsonResponse
      */
-    protected function response($object, string $group)
+    protected function response($object = [], string $group = null, $statusCode = Response::HTTP_OK)
     {
-        return new JsonResponse(json_decode($this->serializer->serialize($object, self::FORMAT, ['groups' => $group])));
+        return new JsonResponse(json_decode($this->serializer->serialize($object, self::FORMAT, ['groups' => $group])), $statusCode);
     }
 
     /**
