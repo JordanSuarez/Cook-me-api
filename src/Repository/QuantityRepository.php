@@ -63,10 +63,14 @@ class QuantityRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Quantity $quantity
+     * @param Quantity $quantityId
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function remove(Quantity $quantity)
+    public function remove(Quantity $quantityId)
     {
-        $this->removeEntity($quantity);
+        $quantity = $this->find($quantityId);
+        $this->_em->remove($quantity);
+        $this->_em->flush();
     }
 }

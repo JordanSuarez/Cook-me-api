@@ -73,8 +73,8 @@ class Recipe
     /**
      * @ORM\ManyToMany(targetEntity="Ingredient")
      * @ORM\JoinTable(name="recipes_ingredients",
-     *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id"))},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id"))}
      * )
      */
     private $ingredients;

@@ -62,4 +62,17 @@ class QuantityController extends BaseController
 
         return $this->response($this->quantityRepository->create($quantity), QUantity::GROUP_QUANTITY);
     }
+
+    /**
+     * @Route("/quantities/{quantity_id}", name="app_get_one_quantity", requirements={"quantity_id": "\d+"}, methods={"DELETE"})
+     * @ParamConverter("quantity", options={"id" = "quantity_id"})
+     * @param Quantity $quantity
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Quantity $quantity)
+    {
+        return $this->response($this->quantityRepository->remove($quantity),Quantity::GROUP_QUANTITY);
+    }
 }

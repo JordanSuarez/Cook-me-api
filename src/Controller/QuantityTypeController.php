@@ -66,4 +66,15 @@ class QuantityTypeController extends BaseController
 
         return $this->response($this->quantityTypeRepository->create($quantityType), QuantityType::GROUP_QUANTITY_TYPE);
     }
+
+    /**
+     * @Route("/quantity-types/{quantity_type_id}", name="app_delete_quantity_type", requirements={"quantity_type_id": "\d+"}, methods={"DELETE"})
+     * @ParamConverter("quantityType", options={"id" = "quantity_type_id"})
+     * @param QuantityType $quantityType
+     * @return JsonResponse
+     */
+    public function delete(QuantityType $quantityType)
+    {
+        return $this->response($this->quantityTypeRepository->remove($quantityType),QuantityType::GROUP_QUANTITY_TYPE);
+    }
 }

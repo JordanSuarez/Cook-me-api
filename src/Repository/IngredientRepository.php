@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Ingredient;
-use App\Entity\Quantity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -63,10 +62,14 @@ class IngredientRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Ingredient $ingredient
+     * @param Ingredient $ingredientId
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function remove(Ingredient $ingredient)
+    public function remove(Ingredient $ingredientId)
     {
-        $this->removeEntity($ingredient);
+        $ingredient = $this->find($ingredientId);
+        $this->_em->remove($ingredient);
+        $this->_em->flush();
     }
 }

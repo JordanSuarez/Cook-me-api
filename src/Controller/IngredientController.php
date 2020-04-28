@@ -68,4 +68,17 @@ class IngredientController extends BaseController
 
         return $this->response($this->ingredientRepository->create($ingredient), Ingredient::GROUP_INGREDIENT);
     }
+
+    /**
+     * @Route("/ingredients/{ingredient_id}", name="app_delete_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"DELETE"})
+     * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
+     * @param Ingredient $ingredient
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Ingredient $ingredient)
+    {
+        return $this->response($this->ingredientRepository->remove($ingredient),Ingredient::GROUP_INGREDIENT);
+    }
 }

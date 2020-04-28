@@ -41,7 +41,7 @@ class RecipeController extends BaseController
         try {
             return $this->response($recipes, Recipe::GROUP_RECIPE, Response::HTTP_OK);
         } catch (ORMInvalidArgumentException $exception){
-            return $this->response(null, null, Response::HTTP_NOT_FOUND);
+
         }
     }
 
@@ -55,8 +55,8 @@ class RecipeController extends BaseController
     {
         try {
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_OK);
-        } catch (RouteNotFoundException $exception) {
-            return $this->response(null, null, Response::HTTP_NOT_FOUND);
+        } catch (ORMException $exception) {
+
         }
     }
 
@@ -76,7 +76,7 @@ class RecipeController extends BaseController
             $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
         } catch (ORMInvalidArgumentException $exception) {
-            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+//            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 }

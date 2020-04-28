@@ -66,6 +66,7 @@ class RecipeTypeRepository extends ServiceEntityRepository
     /**
      * @param $recipeTypeId
      * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function remove(RecipeType $recipeTypeId)
     {
