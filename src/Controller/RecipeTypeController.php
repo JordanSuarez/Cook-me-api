@@ -43,7 +43,7 @@ class RecipeTypeController extends BaseController
 
     /**
      * @Route("/recipe-types/{recipe_type_id}", name="app_get_one_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"GET"})
-     * @ParamConverter("recipeType", options={"id" = "quantity_type_id"})
+     * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
      * @param RecipeType $recipeType
      * @return JsonResponse
      */
@@ -53,7 +53,7 @@ class RecipeTypeController extends BaseController
     }
 
     /**
-     * @Route("/recipe-types", name="app_post_recipe_types", methods={"POST"})
+     * @Route("/recipe-types", name="app_post_recipe_type", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      * @throws ORMException
@@ -65,5 +65,31 @@ class RecipeTypeController extends BaseController
         $recipeType = $this->handleRequest(RecipeType::class, RecipeType::GROUP_RECIPE_TYPE, $request);
 
         return $this->response($this->recipeTypeRepository->create($recipeType),RecipeType::GROUP_RECIPE_TYPE);
+    }
+
+    /**
+     * @Route("/recipe-types/{recipe_type_id}", name="app_update_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"PATCH"})
+     * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Request $request)
+    {
+        /** @var RecipeType $recipeType */
+        $recipeType = $this->handleRequest(RecipeType::class, RecipeType::GROUP_RECIPE_TYPE, $request);
+
+        return $this->response($this->recipeTypeRepository->update($recipeType),RecipeType::GROUP_RECIPE_TYPE);
+    }
+
+    /**
+     * @Route("/recipe-types/{recipe_type_id}", name="app_delete_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"DELETE"})
+     * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
+     * @param RecipeType $recipeType
+     * @return JsonResponse
+     * @throws ORMException
+     */
+    public function delete(RecipeType $recipeType)
+    {
+        return $this->response($this->recipeTypeRepository->remove($recipeType),RecipeType::GROUP_RECIPE_TYPE);
     }
 }

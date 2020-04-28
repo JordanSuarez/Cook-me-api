@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeController extends BaseController
@@ -37,8 +38,11 @@ class RecipeController extends BaseController
     public function getAll()
     {
         $recipes = $this->recipeRepository->findAll();
-
-        return $this->response($recipes, Recipe::GROUP_RECIPE);
+        try {
+            return $this->response($recipes, Recipe::GROUP_RECIPE, Response::HTTP_OK);
+        } catch (ORMInvalidArgumentException $exception){
+            return $this->response(null, null, Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -49,7 +53,11 @@ class RecipeController extends BaseController
      */
     public function getOne(Recipe $recipe)
     {
-        return $this->response($recipe, Recipe::GROUP_RECIPE);
+        try {
+            return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_OK);
+        } catch (RouteNotFoundException $exception) {
+            return $this->response(null, null, Response::HTTP_NOT_FOUND);
+        }
     }
 
     /**
@@ -70,6 +78,5 @@ class RecipeController extends BaseController
         } catch (ORMInvalidArgumentException $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-
     }
 }

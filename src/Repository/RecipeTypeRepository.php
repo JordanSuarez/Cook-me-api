@@ -13,10 +13,10 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class RecipeTypeRepository
  * @package App\Repository
- * @method removeEntity(RecipeType $recipeType)
  */
 class RecipeTypeRepository extends ServiceEntityRepository
 {
+
     /**
      * RecipeTypeRepository constructor
      * @param ManagerRegistry $registry
@@ -33,7 +33,9 @@ class RecipeTypeRepository extends ServiceEntityRepository
      * @throws OptimisticLockException
      */
     private function save($entity, $persist = true) {
-        if($persist) $this->_em->persist($entity);
+        if($persist) {
+            $this->_em->persist($entity);
+        }
         $this->_em->flush();
     }
 
@@ -45,7 +47,7 @@ class RecipeTypeRepository extends ServiceEntityRepository
      */
     public function create(RecipeType $recipeType): RecipeType
     {
-        $this->save($recipeType);
+        $this->save($recipeType, true);
         return $recipeType;
     }
 
@@ -62,10 +64,13 @@ class RecipeTypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param RecipeType $recipeType
+     * @param $recipeTypeId
+     * @throws ORMException
      */
-    public function remove(RecipeType $recipeType)
+    public function remove(RecipeType $recipeTypeId)
     {
-        $this->removeEntity($recipeType);
+        $recipeType = $this->find($recipeTypeId);
+        $this->_em->remove($recipeType);
+        $this->_em->flush();
     }
 }
