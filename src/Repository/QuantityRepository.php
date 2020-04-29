@@ -18,6 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuantityRepository extends ServiceEntityRepository
 {
+
     /**
      * QuantityRepository constructor
      * @param ManagerRegistry $registry
@@ -69,6 +70,10 @@ class QuantityRepository extends ServiceEntityRepository
      */
     public function remove(Quantity $quantity)
     {
+        // Pour supprimer ma quantity, je dois d'abord la supprimer de l'ingredient qui lui est associé
+        // je recherche l'ingredient qui est lié a ma quantity
+        // je supprime ma quantity de mon ingredient
+        //je supprime ma quantity
         $this->_em->remove($quantity);
         $this->_em->flush();
     }

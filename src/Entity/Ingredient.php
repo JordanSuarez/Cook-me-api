@@ -54,7 +54,7 @@ class Ingredient
 
     /**
      * @var Quantity
-     * @ORM\OneToOne(targetEntity="Quantity")
+     * @ORM\OneToOne(targetEntity="Quantity", inversedBy="ingredient")
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\Quantity")
      */
@@ -174,5 +174,4 @@ class Ingredient
     {
         return $this->recipes;
     }
-
 }

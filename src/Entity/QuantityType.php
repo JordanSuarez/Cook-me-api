@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,12 +34,19 @@ class QuantityType
     private string $name;
 
     /**
+     * @var Quantity[]
+     * @ORM\OneToMany(targetEntity="Quantity", mappedBy="quantityType")
+     */
+    private $quantities;
+
+    /**
      * QuantityType constructor.
      * @param string $name
      */
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->quantities = new ArrayCollection();
     }
 
     /**
@@ -63,5 +71,31 @@ class QuantityType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return
+     */
+    public function getQuantities()
+    {
+        return $this->quantities;
+    }
+
+    /**
+     * @param Quantity $quantity
+     */
+    public function addQuantity(Quantity $quantity)
+    {
+        $this->quantities->add($quantity);
+    }
+
+    /**
+     * @param Quantity $quantity
+     */
+    public function removeQuantity(Quantity $quantity)
+    {
+        if ($this->quantities->contains($quantity)) {
+            $this->quantities->removeElement($quantity);
+        }
     }
 }

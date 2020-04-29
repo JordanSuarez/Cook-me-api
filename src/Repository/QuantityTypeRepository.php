@@ -17,13 +17,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuantityTypeRepository extends ServiceEntityRepository
 {
+    /** @var QuantityRepository  */
+    private QuantityRepository $quantityRepository;
+
     /**
      * QuantityTypeRepository constructor
      * @param ManagerRegistry $registry
+     * @param QuantityRepository $quantityRepository
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, QuantityRepository $quantityRepository)
     {
         parent::__construct($registry, QuantityType::class);
+        $this->quantityRepository = $quantityRepository;
     }
 
     /**
@@ -68,6 +73,11 @@ class QuantityTypeRepository extends ServiceEntityRepository
      */
     public function remove(QuantityType $quantityType)
     {
+        foreach ($quantityType->getQuantities() as $quantity) {
+            // jutilise ma methode remove de quantityRepository pour supprimer le lien avec son ingredient
+            // pour pouvoir supprimer cette quantity et enfin supprimer ma quantityType
+            $this->quantityRepository->remove($quantity);
+        }
         $this->_em->remove($quantityType);
         $this->_em->flush();
     }

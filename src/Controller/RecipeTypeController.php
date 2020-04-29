@@ -72,6 +72,8 @@ class RecipeTypeController extends BaseController
      * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
      * @param Request $request
      * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function update(Request $request)
     {

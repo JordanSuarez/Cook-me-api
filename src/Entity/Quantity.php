@@ -33,11 +33,17 @@ class Quantity
     private string $number;
 
     /**
-     * @var QuantityType
-     * @ORM\ManyToOne(targetEntity="QuantityType")
+     * @ORM\ManyToOne(targetEntity="QuantityType", inversedBy="quantities")
      * @ORM\JoinColumn(name="quantity_type_id", referencedColumnName="id")
+     * @Assert\Type(type="App\Entity\QuantityType")
      */
     private QuantityType $quantityType;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Ingredient", mappedBy="quantity")
+     * @Assert\Type(type="App\Entity\Ingredient")
+     */
+    private Ingredient $ingredient;
 
     /**
      * Number constructor.
@@ -87,5 +93,13 @@ class Quantity
     public function setQuantityType($quantityType): void
     {
         $this->quantityType = $quantityType;
+    }
+
+    /**
+     * @return Ingredient
+     */
+    public function getIngredient(): Ingredient
+    {
+        return $this->ingredient;
     }
 }

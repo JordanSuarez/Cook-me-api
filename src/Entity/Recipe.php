@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -67,10 +68,12 @@ class Recipe
     /**
      * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
      * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
+     * @Assert\Type(type="App\Entity\RecipeType")
      */
     private RecipeType $recipeType;
 
     /**
+     * @var Ingredient[]
      * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
      * @ORM\JoinTable(name="recipes_ingredients",
      *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
@@ -173,7 +176,7 @@ class Recipe
 
     /**
      * @ORM\PreUpdate()
-     * @throws \Exception
+     * @throws Exception
      */
     public function setUpdatedAt(): void
     {
@@ -183,7 +186,7 @@ class Recipe
     /**
      * @return mixed
      */
-    public function getRecipeType()
+    public function getRecipeType(): RecipeType
     {
         return $this->recipeType;
     }

@@ -54,14 +54,12 @@ class RecipeTypeRepository extends ServiceEntityRepository
 
     /**
      * @param RecipeType $recipeType
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function update(RecipeType $recipeType)
     {
-        try {
-            $this->save($recipeType, false);
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
+        $this->save($recipeType, false);
     }
 
     /**

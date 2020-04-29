@@ -99,4 +99,5 @@ class RecipeType
             $this->recipes->removeElement($recipe);
         }
     }
+
 }
