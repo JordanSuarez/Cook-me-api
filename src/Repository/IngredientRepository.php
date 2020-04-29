@@ -69,10 +69,6 @@ class IngredientRepository extends ServiceEntityRepository
      */
     public function remove(Ingredient $ingredient)
     {
-        /**@var Recipe $recipe */
-        foreach ($recipe->getIngredients() as $recipeIngredient) {
-            $recipe->removeIngredient($ingredient);
-        }
         $this->_em->remove($ingredient);
         $this->_em->flush();
     }

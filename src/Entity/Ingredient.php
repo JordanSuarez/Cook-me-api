@@ -61,6 +61,12 @@ class Ingredient
     private Quantity $quantity;
 
     /**
+     * @var Recipe[]
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="ingredients")
+     */
+    private $recipes;
+
+    /**
      * Ingredient constructor.
      * @param string $name
      * @param string $description
@@ -69,6 +75,7 @@ class Ingredient
     {
         $this->name = $name;
         $this->description = $description;
+        $this->recipes = new ArrayCollection();
     }
 
     /**
@@ -158,6 +165,14 @@ class Ingredient
     public function setQuantity($quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecipes()
+    {
+        return $this->recipes;
     }
 
 }

@@ -71,7 +71,7 @@ class Recipe
     private RecipeType $recipeType;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Ingredient")
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="recipes")
      * @ORM\JoinTable(name="recipes_ingredients",
      *      joinColumns={@ORM\JoinColumn(name="recipe_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="ingredient_id", referencedColumnName="id")}
@@ -172,12 +172,12 @@ class Recipe
     }
 
     /**
-     * @param DateTime $updatedAt
      * @ORM\PreUpdate()
+     * @throws \Exception
      */
-    public function setUpdatedAt(DateTime $updatedAt): void
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTime();
     }
 
     /**
