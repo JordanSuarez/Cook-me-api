@@ -68,10 +68,12 @@ class QuantityTypeController extends BaseController
     }
 
     /**
-     * @Route("/quantity-types/{quantity_type_id}", name="app_delete_quantity_type", requirements={"quantity_type_id": "\d+"}, methods={"DELETE"})
+     * @Route("/quantity-types/{quantity_type_id}", name="app_remove_quantity_type", requirements={"quantity_type_id": "\d+"}, methods={"DELETE"})
      * @ParamConverter("quantityType", options={"id" = "quantity_type_id"})
      * @param QuantityType $quantityType
      * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(QuantityType $quantityType)
     {

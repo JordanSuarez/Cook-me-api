@@ -76,7 +76,19 @@ class RecipeController extends BaseController
             $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
         } catch (ORMInvalidArgumentException $exception) {
-//            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+    }
+
+    /**
+     * @Route("/recipes/{recipe_id}", name="app_remove_recipe", requirements={"recipe_id": "\d+"}, methods={"DELETE"})
+     * @ParamConverter("recipe", options={"id" = "recipe_id"})
+     * @param Recipe $recipe
+     * @return JsonResponse
+     * @throws ORMException
+     */
+    public function delete(Recipe $recipe)
+    {
+        return $this->response($this->recipeRepository->remove($recipe),Recipe::GROUP_RECIPE);
     }
 }

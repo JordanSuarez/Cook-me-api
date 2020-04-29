@@ -82,7 +82,7 @@ class RecipeTypeController extends BaseController
     }
 
     /**
-     * @Route("/recipe-types/{recipe_type_id}", name="app_delete_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"DELETE"})
+     * @Route("/recipe-types/{recipe_type_id}", name="app_remove_recipe_type", requirements={"recipe_type_id": "\d+"}, methods={"DELETE"})
      * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
      * @param RecipeType $recipeType
      * @return JsonResponse

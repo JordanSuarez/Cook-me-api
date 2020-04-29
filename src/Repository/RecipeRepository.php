@@ -108,10 +108,15 @@ class RecipeRepository extends ServiceEntityRepository
 
     /**
      * @param Recipe $recipe
+     * @throws ORMException
      */
     public function remove(Recipe $recipe)
     {
-        $this->removeEntity($recipe);
+        foreach ($recipe->getIngredients() as $ingredient) {
+            $recipe->removeIngredient($ingredient);
+        }
+        $this->_em->remove($recipe);
+        $this->_em->flush();
     }
 
 

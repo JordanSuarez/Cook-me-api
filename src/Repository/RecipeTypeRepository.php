@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Recipe;
 use App\Entity\RecipeType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -64,13 +65,15 @@ class RecipeTypeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $recipeTypeId
+     * @param RecipeType $recipeType
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(RecipeType $recipeTypeId)
+    public function remove(RecipeType $recipeType)
     {
-        $recipeType = $this->find($recipeTypeId);
+        foreach ($recipeType->getRecipes() as $recipe) {
+            $recipeType->removeRecipe($recipe);
+        }
         $this->_em->remove($recipeType);
         $this->_em->flush();
     }

@@ -70,7 +70,7 @@ class IngredientController extends BaseController
     }
 
     /**
-     * @Route("/ingredients/{ingredient_id}", name="app_delete_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"DELETE"})
+     * @Route("/ingredients/{ingredient_id}", name="app_remove_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"DELETE"})
      * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
      * @param Ingredient $ingredient
      * @return JsonResponse

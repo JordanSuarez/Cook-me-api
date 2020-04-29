@@ -79,4 +79,24 @@ class RecipeType
     {
         return $this->recipes;
     }
+
+    /**
+     * @param Recipe $recipe
+     */
+    public function addRecipe(Recipe $recipe)
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+        }
+    }
+
+    /**
+     * @param Recipe $recipe
+     */
+    public function removeRecipe(Recipe $recipe)
+    {
+        if ($this->recipes->contains($recipe)) {
+            $this->recipes->removeElement($recipe);
+        }
+    }
 }

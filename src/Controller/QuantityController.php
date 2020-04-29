@@ -64,7 +64,7 @@ class QuantityController extends BaseController
     }
 
     /**
-     * @Route("/quantities/{quantity_id}", name="app_get_one_quantity", requirements={"quantity_id": "\d+"}, methods={"DELETE"})
+     * @Route("/quantities/{quantity_id}", name="app_remove_quantity", requirements={"quantity_id": "\d+"}, methods={"DELETE"})
      * @ParamConverter("quantity", options={"id" = "quantity_id"})
      * @param Quantity $quantity
      * @return JsonResponse
