@@ -3,6 +3,7 @@ version: '3.5'
 services:
   cook-me-nginx:
     container_name: cook-me-nginx
+    restart: on-failure
     build:
       context: ./docker/nginx
       args:
