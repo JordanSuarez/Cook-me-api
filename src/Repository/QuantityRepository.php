@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Ingredient;
 use App\Entity\Quantity;
 use App\Entity\QuantityType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,6 +19,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class QuantityRepository extends ServiceEntityRepository
 {
+    /** @var IngredientRepository  */
+    private IngredientRepository $ingredientRepository;
 
     /**
      * QuantityRepository constructor
@@ -53,14 +56,12 @@ class QuantityRepository extends ServiceEntityRepository
 
     /**
      * @param Quantity $quantity
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function update(Quantity $quantity)
     {
-        try {
-            $this->save($quantity, false);
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
+        $this->save($quantity, false);
     }
 
     /**
@@ -70,10 +71,8 @@ class QuantityRepository extends ServiceEntityRepository
      */
     public function remove(Quantity $quantity)
     {
-        // Pour supprimer ma quantity, je dois d'abord la supprimer de l'ingredient qui lui est associé
-        // je recherche l'ingredient qui est lié a ma quantity
-        // je supprime ma quantity de mon ingredient
-        //je supprime ma quantity
+        //utiliser la method removeQuantity de Ingredient Entity pour supprimer la relation
+        // supprimer quantity
         $this->_em->remove($quantity);
         $this->_em->flush();
     }

@@ -100,6 +100,8 @@ class RecipeRepository extends ServiceEntityRepository
     public function update(Recipe $recipe)
     {
         try {
+            // recuperer l'objet existant qui correspond a l'objet recipe de ma requete
+            // remplacer les keys de l'objet existant par les keys contenues dans ma requete
             $this->save($recipe, false);
         } catch (OptimisticLockException $e) {
         } catch (ORMException $e) {

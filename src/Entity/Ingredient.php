@@ -202,4 +202,14 @@ class Ingredient
             $this->recipes->removeElement($recipe);
         }
     }
+
+    /**
+     * @param Quantity $quantity
+     */
+    public function removeQuantity(Quantity $quantity)
+    {
+        if ($this->quantity = $quantity) {
+            //supprimer ma quantity de l'ingredient
+        }
+    }
 }
