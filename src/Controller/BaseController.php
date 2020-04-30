@@ -47,4 +47,13 @@ class BaseController extends AbstractController
 
         return $this->serializer->deserialize($content, $instanceType, self::FORMAT, ['groups' => $group]);
     }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    protected function decodeContent(Request $request)
+    {
+        return json_decode($request->getContent(), true);
+    }
 }

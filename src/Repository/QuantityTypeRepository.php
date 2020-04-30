@@ -13,7 +13,6 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class QuantityTypeRepository
  * @package App\Repository
- * @method removeEntity(QuantityType $quantityType)
  */
 class QuantityTypeRepository extends ServiceEntityRepository
 {
@@ -56,14 +55,17 @@ class QuantityTypeRepository extends ServiceEntityRepository
 
     /**
      * @param QuantityType $quantityType
+     * @param $quantityTypeName
+     * @return QuantityType
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function update(QuantityType $quantityType)
+    public function update(QuantityType $quantityType, string $quantityTypeName)
     {
-        try {
-            $this->save($quantityType, false);
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
+        $quantityType->setName($quantityTypeName);
+        $this->save($quantityType);
+
+        return $quantityType;
     }
 
     /**

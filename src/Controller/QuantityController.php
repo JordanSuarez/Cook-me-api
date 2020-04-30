@@ -9,9 +9,11 @@ use App\Entity\Quantity;
 use App\Repository\QuantityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -61,6 +63,26 @@ class QuantityController extends BaseController
         $quantity = $this->handleRequest(Quantity::class, Quantity::GROUP_QUANTITY, $request);
 
         return $this->response($this->quantityRepository->create($quantity), QUantity::GROUP_QUANTITY);
+    }
+
+    /**
+     * @Route("/quantities/{quantity_id}", name="app_patch_quantity", requirements={"quantity_id": "\d+"}, methods={"PATCH"})
+     * @ParamConverter("quantity", options={"id" = "quantity_id"})
+     * @param Quantity $quantity
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function update(Quantity $quantity, Request $request)
+    {
+        $data = $this->decodeContent($request);
+        try {
+            $quantity = $this->quantityRepository->update($quantity, $data['number'], $data['quantityType']['id']);
+            return $this->response($quantity,Quantity::GROUP_QUANTITY,  Response::HTTP_OK);
+        } catch (ORMInvalidArgumentException $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     /**

@@ -24,13 +24,13 @@ class Quantity
     private int $id;
 
     /**
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
      * @Assert\Positive()
      * @Groups({Quantity::GROUP_QUANTITY})
      */
-    private string $number;
+    private int $number;
 
     /**
      * @ORM\ManyToOne(targetEntity="QuantityType", inversedBy="quantities")
@@ -48,10 +48,12 @@ class Quantity
     /**
      * Number constructor.
      * @param int|string $number
+     * @param QuantityType $quantityType
      */
-    public function __construct($number)
+    public function __construct($number, QuantityType $quantityType)
     {
         $this->number = $number;
+        $this->quantityType = $quantityType;
     }
 
     /**
@@ -63,17 +65,17 @@ class Quantity
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getNumber(): string
+    public function getNumber(): int
     {
         return $this->number;
     }
 
     /**
-     * @param string $number
+     * @param int $number
      */
-    public function setNumber(string $number): void
+    public function setNumber(int $number): void
     {
         $this->number = $number;
     }

@@ -52,14 +52,20 @@ class IngredientRepository extends ServiceEntityRepository
 
     /**
      * @param Ingredient $ingredient
+     * @param string $ingredientName
+     * @param string $ingredientDescription
+     * @param int|null $ingredientQuantity
+     * @return mixed
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function update(Ingredient $ingredient)
+    public function update(Ingredient $ingredient, string $ingredientName, string $ingredientDescription, ?int $ingredientQuantity = null)
     {
-        try {
-            $this->save($ingredient, false);
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
+        //find les autres element de ingredient
+        $ingredient->setName($ingredientName);
+        $this->save($ingredient, false);
+
+        return $ingredient;
     }
 
     /**

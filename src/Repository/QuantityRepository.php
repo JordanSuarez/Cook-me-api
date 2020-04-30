@@ -15,13 +15,9 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class QuantityRepository
  * @package App\Repository
- * @method removeEntity(Quantity $quantity)
  */
 class QuantityRepository extends ServiceEntityRepository
 {
-    /** @var IngredientRepository  */
-    private IngredientRepository $ingredientRepository;
-
     /**
      * QuantityRepository constructor
      * @param ManagerRegistry $registry
@@ -29,6 +25,7 @@ class QuantityRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quantity::class);
+
     }
 
     /**
@@ -51,17 +48,25 @@ class QuantityRepository extends ServiceEntityRepository
     public function create(Quantity $quantity): Quantity
     {
         $this->save($quantity);
+
         return $quantity;
     }
 
     /**
      * @param Quantity $quantity
+     * @param int $quantityNumber
+     * @param int|null $quantityTypeId
+     * @return Quantity
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function update(Quantity $quantity)
+    public function update(Quantity $quantity, int $quantityNumber, ?int $quantityTypeId = null)
     {
+        // find quantityTypeID
+        $quantity->setNumber($quantityNumber);
         $this->save($quantity, false);
+
+        return $quantity;
     }
 
     /**

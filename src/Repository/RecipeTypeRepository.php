@@ -9,6 +9,7 @@ use App\Entity\RecipeType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
 use Doctrine\Persistence\ManagerRegistry;
 use phpDocumentor\Reflection\Types\This;
 
@@ -55,12 +56,17 @@ class RecipeTypeRepository extends ServiceEntityRepository
 
     /**
      * @param RecipeType $recipeType
+     * @param $recipeTypeName
+     * @return RecipeType
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function update(RecipeType $recipeType)
+    public function update(RecipeType $recipeType, $recipeTypeName)
     {
-        $this->save($recipeType);
+        $recipeType->setName($recipeTypeName);
+        $this->save($recipeType, false);
+
+        return $recipeType;
     }
 
     /**
@@ -71,7 +77,8 @@ class RecipeTypeRepository extends ServiceEntityRepository
     public function remove(RecipeType $recipeType)
     {
         foreach ($recipeType->getRecipes() as $recipe) {
-            $recipeType->removeRecipe($recipe);
+            /** @var Recipe $recipe */
+            $recipe->setRecipeType(null);
         }
         $this->_em->remove($recipeType);
         $this->_em->flush();

@@ -15,7 +15,6 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * Class RecipeRepository
  * @package App\Repository
- * @method removeEntity(Recipe $recipe)
  */
 class RecipeRepository extends ServiceEntityRepository
 {
@@ -96,6 +95,9 @@ class RecipeRepository extends ServiceEntityRepository
 
     /**
      * @param Recipe $recipe
+     * @return Recipe
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     // quels arguments mettre dans ma signature car je peux avoir une requete qui ne change qu'un element de ma recipe.
     // faire une method pour chaque key de ma recipe?
@@ -104,6 +106,9 @@ class RecipeRepository extends ServiceEntityRepository
     public function update(Recipe $recipe)
     {
 
+        $this->save($recipe, false);
+
+        return $recipe;
     }
 
     /**
@@ -118,6 +123,4 @@ class RecipeRepository extends ServiceEntityRepository
         $this->_em->remove($recipe);
         $this->_em->flush();
     }
-
-
 }

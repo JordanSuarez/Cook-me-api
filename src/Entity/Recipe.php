@@ -70,7 +70,7 @@ class Recipe
      * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\RecipeType")
      */
-    private RecipeType $recipeType;
+    private ?RecipeType $recipeType;
 
     /**
      * @var Ingredient[]

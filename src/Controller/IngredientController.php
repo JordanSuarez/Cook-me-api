@@ -8,9 +8,11 @@ use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -69,6 +71,25 @@ class IngredientController extends BaseController
         return $this->response($this->ingredientRepository->create($ingredient), Ingredient::GROUP_INGREDIENT);
     }
 
+    /**
+     * @Route("/ingredients/{ingredient_id}", name="app_patch_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"PATCH"})
+     * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
+     * @param Ingredient $ingredient
+     * @param Request $request
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function update(Ingredient $ingredient, Request $request)
+    {
+        $data = $this->decodeContent($request);
+        try {
+            $ingredient = $this->ingredientRepository->update($ingredient, $data['name'], $data['description'], $data['quantity']);
+            return $this->response($ingredient,Ingredient::GROUP_INGREDIENT,  Response::HTTP_OK);
+        } catch (ORMInvalidArgumentException $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
     /**
      * @Route("/ingredients/{ingredient_id}", name="app_remove_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"DELETE"})
      * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
