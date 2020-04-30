@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -143,12 +144,12 @@ class Ingredient
     }
 
     /**
-     * @param DateTime $updatedAt
      * @ORM\PreUpdate()
+     * @throws Exception
      */
-    public function setUpdatedAt(DateTime $updatedAt): void
+    public function setUpdatedAt(): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTime();
     }
 
     /**

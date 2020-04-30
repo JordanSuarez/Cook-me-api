@@ -48,12 +48,10 @@ class Quantity
     /**
      * Number constructor.
      * @param int|string $number
-     * @param QuantityType $quantityType
      */
-    public function __construct($number, QuantityType $quantityType)
+    public function __construct($number)
     {
         $this->number = $number;
-        $this->quantityType = $quantityType;
     }
 
     /**

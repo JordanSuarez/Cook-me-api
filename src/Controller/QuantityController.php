@@ -78,7 +78,7 @@ class QuantityController extends BaseController
     {
         $data = $this->decodeContent($request);
         try {
-            $quantity = $this->quantityRepository->update($quantity, $data['number'], $data['quantityType']['id']);
+            $quantity = $this->quantityRepository->update($quantity, $data['number'], $data['type']['id']);
             return $this->response($quantity,Quantity::GROUP_QUANTITY,  Response::HTTP_OK);
         } catch (ORMInvalidArgumentException $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);

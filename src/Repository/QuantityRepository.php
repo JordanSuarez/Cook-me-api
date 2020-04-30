@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Ingredient;
 use App\Entity\Quantity;
-use App\Entity\QuantityType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -25,7 +23,6 @@ class QuantityRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Quantity::class);
-
     }
 
     /**
@@ -62,8 +59,9 @@ class QuantityRepository extends ServiceEntityRepository
      */
     public function update(Quantity $quantity, int $quantityNumber, ?int $quantityTypeId = null)
     {
-        // find quantityTypeID
+//        $quantityType = $this->quantityTypeRepository->find($quantityTypeId);
         $quantity->setNumber($quantityNumber);
+        $quantity->setQuantityType();
         $this->save($quantity, false);
 
         return $quantity;

@@ -71,7 +71,7 @@ class RecipeController extends BaseController
     {
         /** @var Recipe $recipe */
         $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
-        $data = json_decode($request->getContent(), true);
+        $data = $this->decodeContent($request);
         try {
             $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
