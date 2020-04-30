@@ -97,15 +97,13 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * @param Recipe $recipe
      */
+    // quels arguments mettre dans ma signature car je peux avoir une requete qui ne change qu'un element de ma recipe.
+    // faire une method pour chaque key de ma recipe?
+    // faire des "if ingredient = do.." "if recipeType = do .." ?
+    // utiliser directement les method "set" de Recipe entity pour chaque key dans ma requete?
     public function update(Recipe $recipe)
     {
-        try {
-            // recuperer l'objet existant qui correspond a l'objet recipe de ma requete
-            // remplacer les keys de l'objet existant par les keys contenues dans ma requete
-            $this->save($recipe, false);
-        } catch (OptimisticLockException $e) {
-        } catch (ORMException $e) {
-        }
+
     }
 
     /**
