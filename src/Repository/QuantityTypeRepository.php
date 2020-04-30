@@ -74,8 +74,6 @@ class QuantityTypeRepository extends ServiceEntityRepository
     public function remove(QuantityType $quantityType)
     {
         foreach ($quantityType->getQuantities() as $quantity) {
-            // jutilise ma methode remove de quantityRepository pour supprimer le lien avec son ingredient
-            // pour pouvoir supprimer cette quantity et enfin supprimer ma quantityType
             $this->quantityRepository->remove($quantity);
         }
         $this->_em->remove($quantityType);

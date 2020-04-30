@@ -10,6 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * Class RecipeTypeRepository
@@ -59,7 +60,7 @@ class RecipeTypeRepository extends ServiceEntityRepository
      */
     public function update(RecipeType $recipeType)
     {
-        $this->save($recipeType, false);
+        $this->save($recipeType);
     }
 
     /**

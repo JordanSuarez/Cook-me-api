@@ -174,4 +174,32 @@ class Ingredient
     {
         return $this->recipes;
     }
+
+    /**
+     * @param Recipe[] $recipes
+     */
+    public function setRecipes(array $recipes): void
+    {
+        $this->recipes = $recipes;
+    }
+
+    /**
+     * @param Recipe $recipe
+     */
+    public function addRecipe(Recipe $recipe)
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+        }
+    }
+
+    /**
+     * @param Recipe $recipe
+     */
+    public function removeRecipe(Recipe $recipe)
+    {
+        if ($this->recipes->contains($recipe)) {
+            $this->recipes->removeElement($recipe);
+        }
+    }
 }
