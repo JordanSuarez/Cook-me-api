@@ -54,7 +54,7 @@ class Ingredient
 
     /**
      * @var Quantity
-     * @ORM\OneToOne(targetEntity="Quantity", inversedBy="ingredient")
+     * @ORM\OneToOne(targetEntity="Quantity", inversedBy="ingredient", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="quantity_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\Quantity")
      */
@@ -200,16 +200,6 @@ class Ingredient
     {
         if ($this->recipes->contains($recipe)) {
             $this->recipes->removeElement($recipe);
-        }
-    }
-
-    /**
-     * @param Quantity $quantity
-     */
-    public function removeQuantity(Quantity $quantity)
-    {
-        if ($this->quantity = $quantity) {
-            //supprimer ma quantity de l'ingredient
         }
     }
 }

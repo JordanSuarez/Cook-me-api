@@ -71,8 +71,6 @@ class QuantityRepository extends ServiceEntityRepository
      */
     public function remove(Quantity $quantity)
     {
-        //utiliser la method removeQuantity de Ingredient Entity pour supprimer la relation
-        // supprimer quantity
         $this->_em->remove($quantity);
         $this->_em->flush();
     }

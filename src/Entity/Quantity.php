@@ -40,7 +40,7 @@ class Quantity
     private QuantityType $quantityType;
 
     /**
-     * @ORM\OneToOne(targetEntity="Ingredient", mappedBy="quantity")
+     * @ORM\OneToOne(targetEntity="Ingredient", mappedBy="quantity", cascade={"persist", "remove"})
      * @Assert\Type(type="App\Entity\Ingredient")
      */
     private Ingredient $ingredient;
