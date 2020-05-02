@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Ingredient;
 use App\Entity\Quantity;
+use App\Entity\QuantityType;
 use App\Entity\Recipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -95,14 +96,44 @@ class RecipeRepository extends ServiceEntityRepository
 
     /**
      * @param Recipe $recipe
+     * @param $name
+     * @param $preparationTime
+     * @param $instruction
+     * @param $recipeTypeId
+     * @param $ingredients
+     * @return Recipe
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    // quels arguments mettre dans ma signature car je peux avoir une requete qui ne change qu'un element de ma recipe.
-    // faire une method pour chaque key de ma recipe?
-    // faire des "if ingredient = do.." "if recipeType = do .." ?
-    // utiliser directement les method "set" de Recipe entity pour chaque key dans ma requete?
-    public function update(Recipe $recipe)
+    public function update(Recipe $recipe, $name, $preparationTime, $instruction, $recipeTypeId, $ingredients)
     {
+        $recipe->setName($name);
+        $recipe->setPreparationTime($preparationTime);
+        $recipe->setInstruction($instruction);
 
+        foreach ($ingredients as $ingredient) {
+
+            /** @var Quantity $quantity */
+            $quantityData = $ingredient['quantity'];
+            $quantity = $this->quantityRepository->find($quantityData['id']);
+            $this->quantityRepository->remove($quantity);
+            $newQuantity = new Quantity($quantityData['number']);
+
+            /** @var QuantityType $quantityType */
+            $quantityType = $this->quantityTypeRepository->find($quantityData['type_id']);
+            $newQuantity->setQuantityType($quantityType);
+
+            $this->quantityRepository->create($newQuantity);
+
+            /** @var Ingredient $ingredient */
+            $ingredient = $this->ingredientRepository->find($ingredient['id']);
+            $ingredient->setQuantity($newQuantity);
+        }
+        $recipeType = $this->recipeTypeRepository->find($recipeTypeId);
+        $recipe->setRecipeType($recipeType);
+
+        $this->save($recipe);
+        return $recipe;
     }
 
     /**

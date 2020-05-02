@@ -51,30 +51,12 @@ class QuantityRepository extends ServiceEntityRepository
 
     /**
      * @param Quantity $quantity
-     * @param int $quantityNumber
-     * @param int|null $quantityTypeId
-     * @return Quantity
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function update(Quantity $quantity, int $quantityNumber, ?int $quantityTypeId = null)
-    {
-//        $quantityType = $this->quantityTypeRepository->find($quantityTypeId);
-        $quantity->setNumber($quantityNumber);
-        $quantity->setQuantityType();
-        $this->save($quantity, false);
-
-        return $quantity;
-    }
-
-    /**
-     * @param Quantity $quantity
      * @throws ORMException
      * @throws OptimisticLockException
      */
     public function remove(Quantity $quantity)
     {
         $this->_em->remove($quantity);
-        $this->_em->flush();
+        $this->save(null, false);
     }
 }

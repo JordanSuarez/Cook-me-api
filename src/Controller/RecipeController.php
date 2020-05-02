@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeController extends BaseController
@@ -38,11 +37,8 @@ class RecipeController extends BaseController
     public function getAll()
     {
         $recipes = $this->recipeRepository->findAll();
-        try {
-            return $this->response($recipes, Recipe::GROUP_RECIPE, Response::HTTP_OK);
-        } catch (ORMInvalidArgumentException $exception){
 
-        }
+        return $this->response($recipes, Recipe::GROUP_RECIPE);
     }
 
     /**
@@ -53,19 +49,13 @@ class RecipeController extends BaseController
      */
     public function getOne(Recipe $recipe)
     {
-        try {
-            return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_OK);
-        } catch (ORMException $exception) {
-
-        }
+        return $this->response($recipe, Recipe::GROUP_RECIPE);
     }
 
     /**
      * @Route("/recipes", name="app_post_recipe", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function create(Request $request)
     {
@@ -75,9 +65,33 @@ class RecipeController extends BaseController
         try {
             $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
-        } catch (ORMInvalidArgumentException $exception) {
+        } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+    }
+
+    /**
+     * @Route("/recipes/{recipe_id}", name="app_patch_recipe", requirements={"recipe_id": "\d+"}, methods={"PATCH"})
+     * @ParamConverter("recipe", options={"id" = "recipe_id"})
+     * @param Recipe $recipe
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function update(Recipe $recipe, Request $request)
+    {
+        // This controller method does not handle adding ingredient. To add ingredient use method addIngredient()
+        $data = $this->decodeContent($request);
+        try {
+            $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['recipeType'], $data['ingredients']);
+            return $this->response($recipe,Recipe::GROUP_RECIPE,  Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    public function addIngredient()
+    {
+        // TODO implement this method
     }
 
     /**
@@ -85,10 +99,13 @@ class RecipeController extends BaseController
      * @ParamConverter("recipe", options={"id" = "recipe_id"})
      * @param Recipe $recipe
      * @return JsonResponse
-     * @throws ORMException
      */
     public function delete(Recipe $recipe)
     {
-        return $this->response($this->recipeRepository->remove($recipe),Recipe::GROUP_RECIPE);
+        try {
+            return $this->response($this->recipeRepository->remove($recipe),Recipe::GROUP_RECIPE);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }

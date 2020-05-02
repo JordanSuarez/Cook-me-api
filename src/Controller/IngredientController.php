@@ -84,7 +84,7 @@ class IngredientController extends BaseController
     {
         $data = $this->decodeContent($request);
         try {
-            $ingredient = $this->ingredientRepository->update($ingredient, $data['name'], $data['description'], $data['quantity']);
+            $ingredient = $this->ingredientRepository->update($ingredient, $data['name'], $data['description']);
             return $this->response($ingredient,Ingredient::GROUP_INGREDIENT,  Response::HTTP_OK);
         } catch (ORMInvalidArgumentException $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);

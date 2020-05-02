@@ -33,7 +33,7 @@ class Quantity
     private int $number;
 
     /**
-     * @ORM\ManyToOne(targetEntity="QuantityType", inversedBy="quantities")
+     * @ORM\ManyToOne(targetEntity="QuantityType")
      * @ORM\JoinColumn(name="quantity_type_id", referencedColumnName="id")
      * @Assert\Type(type="App\Entity\QuantityType")
      */
