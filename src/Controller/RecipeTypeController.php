@@ -3,17 +3,12 @@
 
 namespace App\Controller;
 
-
 use App\Entity\RecipeType;
 use App\Repository\RecipeTypeRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -59,15 +54,16 @@ class RecipeTypeController extends BaseController
      * @Route("/recipe-types", name="app_post_recipe_type", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function create(Request $request)
     {
         /** @var RecipeType $recipeType */
         $recipeType = $this->handleRequest(RecipeType::class, RecipeType::GROUP_RECIPE_TYPE, $request);
-
-        return $this->response($this->recipeTypeRepository->create($recipeType),RecipeType::GROUP_RECIPE_TYPE);
+        try {
+            return $this->response($this->recipeTypeRepository->create($recipeType),RecipeType::GROUP_RECIPE_TYPE, Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     /**
@@ -76,16 +72,14 @@ class RecipeTypeController extends BaseController
      * @param RecipeType $recipeType
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function update(RecipeType $recipeType, Request $request)
     {
-        $data = $this->decodeContent($request);
         try {
+            $data = $this->decodeContent($request);
             $recipeType = $this->recipeTypeRepository->update($recipeType, $data['name']);
             return $this->response($recipeType,RecipeType::GROUP_RECIPE_TYPE,  Response::HTTP_OK);
-        } catch (ORMInvalidArgumentException $exception) {
+        } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
@@ -95,10 +89,13 @@ class RecipeTypeController extends BaseController
      * @ParamConverter("recipeType", options={"id" = "recipe_type_id"})
      * @param RecipeType $recipeType
      * @return JsonResponse
-     * @throws ORMException
      */
     public function delete(RecipeType $recipeType)
     {
-        return $this->response($this->recipeTypeRepository->remove($recipeType),RecipeType::GROUP_RECIPE_TYPE);
+        try {
+            return $this->response($this->recipeTypeRepository->remove($recipeType),RecipeType::GROUP_RECIPE_TYPE);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }

@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\ORMInvalidArgumentException;
+use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,8 +59,8 @@ class RecipeController extends BaseController
     {
         /** @var Recipe $recipe */
         $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
-        $data = $this->decodeContent($request);
         try {
+            $data = $this->decodeContent($request);
             $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
         } catch (\Exception $exception) {
@@ -80,8 +78,8 @@ class RecipeController extends BaseController
     public function update(Recipe $recipe, Request $request)
     {
         // This controller method does not handle adding ingredient. To add ingredient use method addIngredient()
-        $data = $this->decodeContent($request);
         try {
+            $data = $this->decodeContent($request);
             $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['recipeType'], $data['ingredients']);
             return $this->response($recipe,Recipe::GROUP_RECIPE,  Response::HTTP_OK);
         } catch (\Exception $exception) {
@@ -103,7 +101,7 @@ class RecipeController extends BaseController
     public function delete(Recipe $recipe)
     {
         try {
-            return $this->response($this->recipeRepository->remove($recipe),Recipe::GROUP_RECIPE);
+            return $this->response($this->recipeRepository->remove($recipe),Recipe::GROUP_RECIPE, Response::HTTP_OK);
         } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }

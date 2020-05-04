@@ -3,12 +3,8 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Ingredient;
 use App\Repository\IngredientRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,15 +56,16 @@ class IngredientController extends BaseController
      * @Route("/ingredients", name="app_post_ingredient", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function create(Request $request)
     {
         /** @var Ingredient $ingredient */
         $ingredient = $this->handleRequest(Ingredient::class, Ingredient::GROUP_INGREDIENT, $request);
-
-        return $this->response($this->ingredientRepository->create($ingredient), Ingredient::GROUP_INGREDIENT);
+        try {
+            return $this->response($this->ingredientRepository->create($ingredient), Ingredient::GROUP_INGREDIENT, Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     /**
@@ -77,29 +74,30 @@ class IngredientController extends BaseController
      * @param Ingredient $ingredient
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function update(Ingredient $ingredient, Request $request)
     {
-        $data = $this->decodeContent($request);
         try {
+            $data = $this->decodeContent($request);
             $ingredient = $this->ingredientRepository->update($ingredient, $data['name'], $data['description']);
             return $this->response($ingredient,Ingredient::GROUP_INGREDIENT,  Response::HTTP_OK);
-        } catch (ORMInvalidArgumentException $exception) {
+        } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
+
     /**
      * @Route("/ingredients/{ingredient_id}", name="app_remove_ingredient", requirements={"ingredient_id": "\d+"} ,methods={"DELETE"})
      * @ParamConverter("ingredient", options={"id" = "ingredient_id"})
      * @param Ingredient $ingredient
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function delete(Ingredient $ingredient)
     {
-        return $this->response($this->ingredientRepository->remove($ingredient),Ingredient::GROUP_INGREDIENT);
+        try {
+            return $this->response($this->ingredientRepository->remove($ingredient),Ingredient::GROUP_INGREDIENT, Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }

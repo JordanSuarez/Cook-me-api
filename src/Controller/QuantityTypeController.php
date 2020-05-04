@@ -3,12 +3,8 @@
 
 namespace App\Controller;
 
-
 use App\Entity\QuantityType;
 use App\Repository\QuantityTypeRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,15 +54,16 @@ class QuantityTypeController extends BaseController
      * @Route("/quantity-types", name="app_post_quantity_types", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function create(Request $request)
     {
         /** @var QuantityType $quantityType */
         $quantityType = $this->handleRequest(QuantityType::class, QuantityType::GROUP_QUANTITY_TYPE, $request);
-
-        return $this->response($this->quantityTypeRepository->create($quantityType), QuantityType::GROUP_QUANTITY_TYPE);
+        try {
+            return $this->response($this->quantityTypeRepository->create($quantityType), QuantityType::GROUP_QUANTITY_TYPE, Response::HTTP_CREATED);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 
     /**
@@ -75,16 +72,14 @@ class QuantityTypeController extends BaseController
      * @param QuantityType $quantityType
      * @param Request $request
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function update(QuantityType $quantityType, Request $request)
     {
-        $data = $this->decodeContent($request);
         try {
+            $data = $this->decodeContent($request);
             $quantityType = $this->quantityTypeRepository->update($quantityType, $data['name']);
             return $this->response($quantityType,QuantityType::GROUP_QUANTITY_TYPE,  Response::HTTP_OK);
-        } catch (ORMInvalidArgumentException $exception) {
+        } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
@@ -94,11 +89,13 @@ class QuantityTypeController extends BaseController
      * @ParamConverter("quantityType", options={"id" = "quantity_type_id"})
      * @param QuantityType $quantityType
      * @return JsonResponse
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function delete(QuantityType $quantityType)
     {
-        return $this->response($this->quantityTypeRepository->remove($quantityType),QuantityType::GROUP_QUANTITY_TYPE);
+        try {
+            return $this->response($this->quantityTypeRepository->remove($quantityType),QuantityType::GROUP_QUANTITY_TYPE, Response::HTTP_OK);
+        } catch (\Exception $exception) {
+            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
     }
 }
