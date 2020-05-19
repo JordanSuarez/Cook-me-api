@@ -16,18 +16,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class IngredientRepository extends ServiceEntityRepository
 {
-    /** @var RecipeTypeRepository  */
-    private RecipeTypeRepository $recipeTypeRepository;
-
     /**
      * IngredientRepository constructor.
      * @param ManagerRegistry $registry
-     * @param RecipeTypeRepository $recipeTypeRepository
      */
-    public function __construct(ManagerRegistry $registry, RecipeTypeRepository $recipeTypeRepository)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ingredient::class);
-        $this->recipeTypeRepository = $recipeTypeRepository;
     }
 
     /**

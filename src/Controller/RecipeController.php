@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Recipe;
 use App\Repository\RecipeRepository;
-use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,6 +13,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeController extends BaseController
 {
+    const STARTERS = 'starters';
+    const DISH = 'dish';
+    const DESERTS = 'deserts';
+
     /** @var RecipeRepository  */
     private RecipeRepository $recipeRepository;
 
@@ -40,6 +43,15 @@ class RecipeController extends BaseController
     }
 
     /**
+     * @Route("/recipes/types", name="app_get_all_recipes_types", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function getAllTypes()
+    {
+        return $this->response([self::STARTERS => Recipe::STARTERS, self::DISH => Recipe::DISH, self::DESERTS => Recipe::DESERTS], Recipe::GROUP_RECIPE);
+    }
+
+    /**
      * @Route("/recipes/{recipe_id}", name="app_get_one_recipe", requirements={"recipe_id": "\d+"}, methods={"GET"})
      * @ParamConverter("recipe", options={"id" = "recipe_id"})
      * @param Recipe $recipe
@@ -48,6 +60,19 @@ class RecipeController extends BaseController
     public function getOne(Recipe $recipe)
     {
         return $this->response($recipe, Recipe::GROUP_RECIPE);
+    }
+
+    /**
+     * @Route("/recipes/types/{type_id}", name="app_get_all_recipes_by_type", requirements={"type_id": "\d+"}, methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAllByRecipeType(Request $request)
+    {
+        /** @var Recipe $recipe */
+        $id = $request->attributes->get('type_id');
+        $recipes = $this->recipeRepository->findBy(['type' => $id]);
+        return $this->response($recipes, Recipe::GROUP_RECIPE);
     }
 
     /**
@@ -61,7 +86,7 @@ class RecipeController extends BaseController
         $recipe = $this->handleRequest(Recipe::class, Recipe::GROUP_RECIPE, $request);
         try {
             $data = $this->decodeContent($request);
-            $recipe = $this->recipeRepository->create($recipe, $data['ingredients'], $data['recipeType']);
+            $recipe = $this->recipeRepository->create($recipe, $data['ingredients']);
             return $this->response($recipe, Recipe::GROUP_RECIPE, Response::HTTP_CREATED);
         } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -80,7 +105,7 @@ class RecipeController extends BaseController
         // This controller method does not handle adding ingredient. To add ingredient use method addIngredient()
         try {
             $data = $this->decodeContent($request);
-            $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['recipeType'], $data['ingredients']);
+            $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['ingredients']);
             return $this->response($recipe,Recipe::GROUP_RECIPE,  Response::HTTP_OK);
         } catch (\Exception $exception) {
             return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);

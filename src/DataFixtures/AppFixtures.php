@@ -20,7 +20,6 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         return [
             UserFixtures::class,
             QuantityTypeFixtures::class,
-            RecipeTypeFixtures::class,
             QuantityFixtures::class,
             IngredientFixtures::class,
             RecipeFixtures::class,

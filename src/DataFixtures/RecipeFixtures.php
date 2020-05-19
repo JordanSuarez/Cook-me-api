@@ -14,7 +14,7 @@ class RecipeFixtures extends Fixture
         for ($i = 0; $i < $_ENV['FIXTURES_QUANTITY']; $i++) {
             $recipe = new Recipe('recipe name '.$i, 'instruction '.$i);
             $recipe->addIngredient($this->getReference('ingredient_'.$i));
-            $recipe->setRecipeType($this->getReference('recipe_type_'.$i));
+            $recipe->setType(rand(1, 3));
             $recipe->setCreatedAt(new \DateTime());
             $this->addReference('recipe_'.$i, $recipe);
             $manager->persist($recipe);

@@ -25,9 +25,6 @@ class RecipeRepository extends ServiceEntityRepository
     /** @var IngredientRepository  */
     private IngredientRepository $ingredientRepository;
 
-    /** @var RecipeTypeRepository  */
-    private RecipeTypeRepository $recipeTypeRepository;
-
     /** @var QuantityTypeRepository */
     private QuantityTypeRepository $quantityTypeRepository;
 
@@ -36,19 +33,16 @@ class RecipeRepository extends ServiceEntityRepository
      * @param ManagerRegistry $registry
      * @param QuantityRepository $quantityRepository
      * @param IngredientRepository $ingredientRepository
-     * @param RecipeTypeRepository $recipeTypeRepository
      * @param QuantityTypeRepository $quantityTypeRepository
      */
     public function __construct(ManagerRegistry $registry,
                                 QuantityRepository $quantityRepository,
                                 IngredientRepository $ingredientRepository,
-                                RecipeTypeRepository $recipeTypeRepository,
                                 QuantityTypeRepository $quantityTypeRepository)
     {
         parent::__construct($registry, Recipe::class);
         $this->quantityRepository = $quantityRepository;
         $this->ingredientRepository = $ingredientRepository;
-        $this->recipeTypeRepository = $recipeTypeRepository;
         $this->quantityTypeRepository = $quantityTypeRepository;
     }
 
@@ -66,12 +60,11 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * @param Recipe $recipe
      * @param array $ingredientsData
-     * @param int $recipeTypeData
      * @return Recipe
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function create(Recipe $recipe, array $ingredientsData, int $recipeTypeData): Recipe
+    public function create(Recipe $recipe, array $ingredientsData): Recipe
     {
         foreach ($ingredientsData as $ingredientData) {
             // Handle Quantity
@@ -86,11 +79,9 @@ class RecipeRepository extends ServiceEntityRepository
             $ingredient = $this->ingredientRepository->find($ingredientData['id']);
             $recipe->addIngredient($ingredient);
         }
-        // Handle RecipeType
-        $recipeType = $this->recipeTypeRepository->find($recipeTypeData);
-        $recipe->setRecipeType($recipeType);
 
         $this->save($recipe);
+
         return $recipe;
     }
 
@@ -99,13 +90,12 @@ class RecipeRepository extends ServiceEntityRepository
      * @param $name
      * @param $preparationTime
      * @param $instruction
-     * @param $recipeTypeId
      * @param $ingredients
      * @return Recipe
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function update(Recipe $recipe, $name, $preparationTime, $instruction, $recipeTypeId, $ingredients)
+    public function update(Recipe $recipe, $name, $preparationTime, $instruction, $ingredients)
     {
         $recipe->setName($name);
         $recipe->setPreparationTime($preparationTime);
@@ -129,10 +119,8 @@ class RecipeRepository extends ServiceEntityRepository
             $ingredient = $this->ingredientRepository->find($ingredient['id']);
             $ingredient->setQuantity($newQuantity);
         }
-        $recipeType = $this->recipeTypeRepository->find($recipeTypeId);
-        $recipe->setRecipeType($recipeType);
-
         $this->save($recipe);
+
         return $recipe;
     }
 

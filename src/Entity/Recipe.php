@@ -18,6 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Recipe
 {
     const GROUP_RECIPE = 'group_recipe';
+    const STARTERS = 1;
+    const DISH = 2;
+    const DESERTS = 3;
 
     /**
      * @ORM\Id
@@ -52,6 +55,14 @@ class Recipe
     private string $instruction;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Groups({Recipe::GROUP_RECIPE})
+     */
+    private int $type;
+
+    /**
      * @ORM\Column(type="datetime", nullable=false)
      * @Assert\NotNull()
      * @Assert\NotBlank()
@@ -64,13 +75,6 @@ class Recipe
      * @Assert\DateTime()
      */
     private ?DateTime $updatedAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="RecipeType", inversedBy="recipes")
-     * @ORM\JoinColumn(name="recipe_type_id", referencedColumnName="id")
-     * @Assert\Type(type="App\Entity\RecipeType")
-     */
-    private ?RecipeType $recipeType;
 
     /**
      * @var Ingredient[]
@@ -151,6 +155,22 @@ class Recipe
     }
 
     /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType(int $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
      * @return DateTime
      */
     public function getCreatedAt(): DateTime
@@ -181,22 +201,6 @@ class Recipe
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new DateTime();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecipeType(): RecipeType
-    {
-        return $this->recipeType;
-    }
-
-    /**
-     * @param mixed $recipeType
-     */
-    public function setRecipeType($recipeType): void
-    {
-        $this->recipeType = $recipeType;
     }
 
     /**
