@@ -69,7 +69,7 @@ class RecipeRepository extends ServiceEntityRepository
         foreach ($ingredientsData as $ingredientData) {
             // Handle Quantity
             $quantityData = $ingredientData['quantity'];
-            $quantity = new Quantity($quantityData['number']);
+            $quantity = new Quantity($quantityData['value']);
             $quantityType = $this->quantityTypeRepository->find($quantityData['type_id']);
             $quantity->setQuantityType($quantityType);
             $this->quantityRepository->create($quantity);

@@ -48,7 +48,13 @@ class RecipeController extends BaseController
      */
     public function getAllTypes()
     {
-        return $this->response([self::STARTERS => Recipe::STARTERS, self::DISH => Recipe::DISH, self::DESERTS => Recipe::DESERTS], Recipe::GROUP_RECIPE);
+        return $this->response(
+            [
+                ['id' => Recipe::STARTERS, 'name' => self::STARTERS],
+                ['id' => Recipe::DISH, 'name' => self::DISH],
+                ['id' => Recipe::DESERTS, 'name' => self::DESERTS]
+
+            ], Recipe::GROUP_RECIPE);
     }
 
     /**

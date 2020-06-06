@@ -30,7 +30,7 @@ class Quantity
      * @Assert\Positive()
      * @Groups({Quantity::GROUP_QUANTITY})
      */
-    private int $number;
+    private int $value;
 
     /**
      * @ORM\ManyToOne(targetEntity="QuantityType")
@@ -46,12 +46,12 @@ class Quantity
     private Ingredient $ingredient;
 
     /**
-     * Number constructor.
-     * @param int|string $number
+     * Value constructor.
+     * @param int|string $value
      */
-    public function __construct($number)
+    public function __construct($value)
     {
-        $this->number = $number;
+        $this->value = $value;
     }
 
     /**
@@ -65,17 +65,17 @@ class Quantity
     /**
      * @return int
      */
-    public function getNumber(): int
+    public function getValue(): int
     {
-        return $this->number;
+        return $this->value;
     }
 
     /**
-     * @param int $number
+     * @param int $value
      */
-    public function setNumber(int $number): void
+    public function setValue(int $value): void
     {
-        $this->number = $number;
+        $this->value = $value;
     }
 
 
