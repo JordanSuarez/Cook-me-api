@@ -59,13 +59,17 @@ class RecipeController extends BaseController
 
     /**
      * @Route("/recipes/{recipe_id}", name="app_get_one_recipe", requirements={"recipe_id": "\d+"}, methods={"GET"})
-     * @ParamConverter("recipe", options={"id" = "recipe_id"})
-     * @param Recipe $recipe
+     *@param Request $request
      * @return JsonResponse
      */
-    public function getOne(Recipe $recipe)
+    public function getOne(Request $request)
     {
-        return $this->response($recipe, Recipe::GROUP_RECIPE);
+        /** @var Recipe $recipe */
+            $id = $request->attributes->get('');
+            $recipe = $this->recipeRepository->getOne($id);
+            dump($recipe);
+            return $this->response($recipe, null, false);
+
     }
 
     /**

@@ -25,14 +25,19 @@ class BaseController extends AbstractController
     }
 
     /**
-     * @param $object
+     * @param array $object
      * @param string $group
-     * @param $statusCode
+     * @param bool $withSerializer
+     * @param int $statusCode
      * @return JsonResponse
      */
-    protected function response($object = [], string $group = null, $statusCode = Response::HTTP_OK)
+    protected function response($object = [], string $group = null, bool $withSerializer = true, $statusCode = Response::HTTP_OK)
     {
-        return new JsonResponse(json_decode($this->serializer->serialize($object, self::FORMAT, ['groups' => $group])), $statusCode);
+        if ($withSerializer) {
+            return new JsonResponse(json_decode($this->serializer->serialize($object, self::FORMAT, ['groups' => $group])), $statusCode);
+        }
+
+        return new JsonResponse($object, $statusCode);
     }
 
     /**
