@@ -65,11 +65,10 @@ class RecipeController extends BaseController
     public function getOne(Request $request)
     {
         /** @var Recipe $recipe */
-            $id = $request->attributes->get('');
+            $id = $request->attributes->get('recipe_id');
             $recipe = $this->recipeRepository->getOne($id);
-            dump($recipe);
-            return $this->response($recipe, null, false);
 
+            return $this->response($recipe, null, false);
     }
 
     /**

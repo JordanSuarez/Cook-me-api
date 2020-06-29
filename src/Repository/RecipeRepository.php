@@ -57,17 +57,20 @@ class RecipeRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * @param $id
+     * @return array|int|string
+     */
     public function getOne($id)
     {
         return $this->createQueryBuilder('r')
-            ->addSelect('quantity')
-            ->addSelect('ingredient')
-            ->addSelect('quantityType')
-            //->addSelect('i.name', 'i')
-            ->leftJoin('r.ingredient','i')
-            ->leftJoin('r.quantity', 'q')
+            ->where('r.id = :id')
+            ->leftJoin('r.ingredients','i')
+                ->addSelect('i')
+            ->leftJoin('i.quantity', 'q')
+                ->addSelect('q')
             ->leftJoin('q.quantityType', 'qt')
-            ->where('a.id = :id')
+                ->addSelect('qt')
             ->setParameter('id',$id)
                 ->getQuery()
                 ->getArrayResult();
