@@ -68,7 +68,7 @@ class RecipeController extends BaseController
             $id = $request->attributes->get('recipe_id');
             $recipe = $this->recipeRepository->getOne($id);
 
-            return $this->response($recipe, null, false);
+        return $this->response(array_shift($recipe), null, false);
     }
 
     /**
