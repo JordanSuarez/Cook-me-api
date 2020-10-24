@@ -103,7 +103,7 @@ class RecipeController extends BaseController
     }
 
     /**
-     * @Route("/recipes/{recipe_id}", name="app_patch_recipe", requirements={"recipe_id": "\d+"}, methods={"PATCH"})
+     * @Route("/recipes/{recipe_id}", name="app_put_recipe", requirements={"recipe_id": "\d+"}, methods={"PUT"})
      * @ParamConverter("recipe", options={"id" = "recipe_id"})
      * @param Recipe $recipe
      * @param Request $request
@@ -114,10 +114,12 @@ class RecipeController extends BaseController
         // This controller method does not handle adding ingredient. To add ingredient use method addIngredient()
         try {
             $data = $this->decodeContent($request);
-            $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['ingredients']);
+
+            $recipe = $this->recipeRepository->update($recipe, $data['name'], $data['preparationTime'], $data['instruction'], $data['type'], $data['ingredients']);
             return $this->response($recipe,Recipe::GROUP_RECIPE,  Response::HTTP_OK);
         } catch (\Exception $exception) {
-            return $this->response(null, null, Response::HTTP_UNPROCESSABLE_ENTITY);
+            dump($exception);
+            return $this->response(null, null, false, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
