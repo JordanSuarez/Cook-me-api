@@ -86,16 +86,19 @@ class RecipeRepository extends ServiceEntityRepository
     public function create(Recipe $recipe, array $ingredientsData): Recipe
     {
         foreach ($ingredientsData as $ingredientData) {
-            // Handle Quantity
             $quantityData = $ingredientData['quantity'];
+
+            /** @var QuantityType $quantityType */
+            $quantityType = $this->quantityTypeRepository->find($quantityData['quantityType']['id']);
+
             $quantity = new Quantity($quantityData['value']);
-            $quantityType = $this->quantityTypeRepository->find($quantityData['type_id']);
             $quantity->setQuantityType($quantityType);
             $this->quantityRepository->create($quantity);
 
-            // Handle Ingredient
             /** @var Ingredient $ingredient */
             $ingredient = $this->ingredientRepository->find($ingredientData['id']);
+            $ingredient->setQuantity($quantity);
+
             $recipe->addIngredient($ingredient);
         }
 
@@ -109,38 +112,22 @@ class RecipeRepository extends ServiceEntityRepository
      * @param $name
      * @param $preparationTime
      * @param $instruction
+     * @param $type
      * @param $ingredients
      * @return Recipe
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function update(Recipe $recipe, $name, $preparationTime, $instruction, $ingredients)
+    public function update(Recipe $recipe, $name, $preparationTime, $instruction, $type, $ingredients): Recipe
     {
-        $recipe->setName($name);
-        $recipe->setPreparationTime($preparationTime);
-        $recipe->setInstruction($instruction);
+        $newRecipe = new Recipe($name, $instruction);
+        $newRecipe->setPreparationTime($preparationTime);
+        $newRecipe->setType($type);
 
-        foreach ($ingredients as $ingredient) {
+        $this->create($newRecipe, $ingredients);
+        $this->remove($recipe);
 
-            /** @var Quantity $quantity */
-            $quantityData = $ingredient['quantity'];
-            $quantity = $this->quantityRepository->find($quantityData['id']);
-            $this->quantityRepository->remove($quantity);
-            $newQuantity = new Quantity($quantityData['number']);
-
-            /** @var QuantityType $quantityType */
-            $quantityType = $this->quantityTypeRepository->find($quantityData['type_id']);
-            $newQuantity->setQuantityType($quantityType);
-
-            $this->quantityRepository->create($newQuantity);
-
-            /** @var Ingredient $ingredient */
-            $ingredient = $this->ingredientRepository->find($ingredient['id']);
-            $ingredient->setQuantity($newQuantity);
-        }
-        $this->save($recipe);
-
-        return $recipe;
+        return $newRecipe;
     }
 
     /**
